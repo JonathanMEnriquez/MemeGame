@@ -1,0 +1,20 @@
+.menu-button {
+    width: 15vw;
+    text-align: center;
+    height: 5vw;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9ad00;
+    border-radius: 8px;
+    font-size: 2vw;
+}
+
+/* Small screen */
+@media only screen and (max-width: 800px) {
+    .menu-button {
+        width: 400px;
+        height: 84px;
+    }
+}

@@ -1,0 +1,74 @@
+.title-screen .header {
+    display: block;
+    padding: 0;
+    margin: 0;
+    background: white;
+}
+
+.title-screen .title {
+    /* subtract the padding */
+    width: calc(100% - 2vw);
+    padding: 2vh 2vw;
+    font-size: 5vw;
+    font-weight: bolder;
+    display: inline-block;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.title-screen .header .title .top-line {
+    margin-bottom: -3vh;
+}
+
+.title-screen .title .top-line span:not(:first-child) {
+    color: #073a94;
+}
+
+.title-screen .title .top-line span:first-child {
+    color: #4dc9d1;
+    padding-right: 1vw;
+}
+
+.title-screen .title .second-line span {
+    color: #d337b2;
+    font-size: 9.5vw;
+}
+
+.title-screen .header .title .second-line span:not(:first-child) {
+    color: #073a94;
+}
+
+.title-screen .header .title .sub-title {
+    color: black;
+    font-size: 1.75vw;
+    font-family: 'Futura', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-align: right;
+    font-weight: normal;
+    padding-top: 2vh;
+    padding-right: 2vw;
+}
+
+.title-screen .header .title .sub-title p {
+    padding: 0;
+    margin: 0;
+}
+
+.title-screen .header .title .sub-title p:not(:first-child) {
+    padding-top: 4px;;
+}
+
+/* Small screen */
+@media only screen and (max-width: 800px) {
+    .title-screen .title .top-line {
+        font-size: 48px;
+    }
+
+    .title-screen .header .title .second-line > span {
+        font-size: 92px !important;
+    }
+
+    .title-screen .header .title .sub-title > p {
+        font-size: 14px;
+    }
+}
+
+/* Large screen */
