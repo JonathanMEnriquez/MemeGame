@@ -1,0 +1,22 @@
+.modal {
+    width: 100vw;
+    height: 100vh;
+    background: rgb(0, 0, 0, 0.5);
+    z-index: 1000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal .modal-content {
+    min-width: 500px;
+    width: 80vw;
+    min-height: 500px;
+    height: 80vw;
+    margin: 0 auto;
+    padding: 4vh 4vw;
+    overflow-y: auto;
+}

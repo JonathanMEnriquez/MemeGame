@@ -1,0 +1,39 @@
+.pregame {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+}
+
+.pregame .middle {
+    grid-column: 2 / 4;
+    grid-row: 2 / 4;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+}
+
+.pregame .middle .code-section {
+    height: 50%;
+    padding-top: 20%;
+}
+
+.pregame .middle .button-section {
+    display: flex;
+    justify-content: center;
+}
+
+.pregame .middle .code-section > span:first-child {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 1.5vw;
+}
+
+.pregame .middle .code-section .code {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 3vw;
+}
