@@ -11,12 +11,27 @@
     align-items: center;
 }
 
-.modal .modal-content {
+.modal .modal-header {
+    width: 100%;
+    padding: 4px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.modal .modal-header > img {
+    width: 3vw;
+    cursor: pointer;
+}
+
+.modal .modal-dialog {
     min-width: 500px;
-    width: 80vw;
-    min-height: 500px;
-    height: 80vw;
+    width: 70vw;
+    min-height: 300px;
+    height: 70vh;
     margin: 0 auto;
     padding: 4vh 4vw;
     overflow-y: auto;
+    border: 2px solid gray;
+    border-radius: 8px;
+    background: rgb(228, 228, 228);
 }

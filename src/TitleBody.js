@@ -11,7 +11,7 @@ const TitleBody = (props) => {
     const modalContent = () => {
         return (
             <div className="title-body-modal-content">
-                <label for="fileUpload">New Images</label>
+                <label htmlFor="fileUpload">New Images</label>
                 <input id="fileUpload" type="file"/>
             </div>
         )
@@ -28,10 +28,10 @@ const TitleBody = (props) => {
             </div>
             <div className={optionMode ? 'menu' : 'hidden'}>
                 <MenuButton text="Back" clickHandler={() => setOptionMode(false)} />
-                <MenuButton text="Add Images" clickHandler={() => console.log('bring up thingy!')} />
+                <MenuButton text="Add Images" clickHandler={() => setShowModal(true)} />
             </div>
             {showModal &&
-                <Modal body={modalContent()} close={() => setShowModal(false)} />
+                <Modal body={modalContent()} closeMethod={() => setShowModal(false)} />
             }
         </div>
     )
