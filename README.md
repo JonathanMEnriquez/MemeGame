@@ -1,4 +1,4 @@
-A game for people that stare at Windows Spotlight images too much. Created in Electron and React.
+A game for meme-ing (or is meming?).
 
 ## Get Started
 
