@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import MenuButton from './MenuButton';
 import './css/TitleBody.css';
 import Modal from './Modal';
+import ImageDragAndDrop from './ImageDragAndDrop';
 
 const TitleBody = (props) => {
     const { pregameMode } = props;
@@ -9,12 +10,7 @@ const TitleBody = (props) => {
     const [showModal, setShowModal] = useState(false);
 
     const modalContent = () => {
-        return (
-            <div className="title-body-modal-content">
-                <label htmlFor="fileUpload">New Images</label>
-                <input id="fileUpload" type="file"/>
-            </div>
-        )
+        return <ImageDragAndDrop />
     };
 
     return (

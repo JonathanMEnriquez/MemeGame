@@ -11,9 +11,7 @@ const Modal = (props) => {
                 <div className="modal-header">
                     <img src={Close} onClick={closeMethod} alt="x" />
                 </div>
-                <div className="modal-content">
-                    {body}
-                </div>
+                {body}
             </div>
         </div>
     )

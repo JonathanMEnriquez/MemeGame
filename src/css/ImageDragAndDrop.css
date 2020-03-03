@@ -1,0 +1,26 @@
+.title-body-modal-content {
+    border: 2px dashed gray;
+    border-radius: 10px;
+    min-height: 300px;
+    height: 80%;
+    min-width: 280px;
+    width: calc(100% - 4vw);
+    padding: 2vh 2vw;
+    margin: auto;
+    margin-top: 2vh;
+    color: black;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.title-body-modal-content .dropzone-icon {
+    min-width: 100px;
+    width: 20%;
+    margin: 0 auto;
+    display: block;
+}
+
+.title-body-modal-content .dropzone-caption {
+    padding-top: 4vh;
+}
