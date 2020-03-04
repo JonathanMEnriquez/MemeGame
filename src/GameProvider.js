@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import GameContext from './GameContext';
+import { generateJoinCode } from './utils/Randoms';
 
 class GameProvider extends Component {
     state = {
@@ -17,8 +18,8 @@ class GameProvider extends Component {
     }
 
     generateCode() {
-        const alphanumeric = Math.random().toString(36).replace('0.', '');
-        this.setState({ code: alphanumeric.slice(0, 6) });
+        const code = generateJoinCode();
+        this.setState({ code: code });
     }
 
     setToPregameMode() {
