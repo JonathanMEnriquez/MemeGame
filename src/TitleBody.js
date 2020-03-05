@@ -24,7 +24,7 @@ const TitleBody = (props) => {
             </div>
             <div className={optionMode ? 'menu' : 'hidden'}>
                 <MenuButton text="Back" clickHandler={() => setOptionMode(false)} />
-                <MenuButton text="Add Images" clickHandler={() => setShowModal(true)} />
+                <MenuButton text="Add Your Images" clickHandler={() => setShowModal(true)} />
             </div>
             {showModal &&
                 <Modal body={modalContent()} closeMethod={() => setShowModal(false)} />

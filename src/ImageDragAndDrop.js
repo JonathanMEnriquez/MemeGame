@@ -8,9 +8,10 @@ import { generateUniqueImageName } from './utils/Randoms';
 const ImageDragAndDrop = (props) => {
     const fs = window.require('fs');
     const icon = { src: UploadImg, alt: 'Add Image(s)' };
+    // console.log(fs.Dirent);
 
     const onDrop = (files) => {
-        const memesPath = Path.resolve(__dirname, '..');
+        const memesPath = Path.resolve(__dirname, '/memes');
         const accepted = [];
         for (let f of files) {
             // check the extension of the File
@@ -20,16 +21,16 @@ const ImageDragAndDrop = (props) => {
         }
 
         for (let img of accepted) {
-            console.log(memesPath);
+            console.log('hola ', memesPath);
             // generate random image name
             console.log(img);
             // save to folder
             const imgName = generateUniqueImageName([], '.'.concat(img.name.split('.')[1]));
-            // fs.appendFile(imgName, f, {}, (err) => console.error(err));
-            console.log(img.toString());
-            const data = JSON.stringify(img).replace(/^data:image\/\w+;base64,/, "");
-            const buf = new Buffer(data, 'base64');
-            fs.appendFile(`./src/memes/${imgName}`, data, undefined, (err) => console.error(err));
+            // fs.copyFile(img.path, memesPath, (err) => console.log(err ? err : 'went through'));
+            // fs.appendFile('testy.txt', 'hola ', null, () => {});
+            // fs.appendFile(`./src/memes/${'testy.txt'}`, "hola", undefined, (err) => console.error(err));
+            fs.appendFile(`./src/memes/${'testy.txt'}`, "hola", undefined, (err) => console.error(err));
+            fs.copyFileSync(img.path, `./src/memes/${imgName}`);
             // add data to db
         }
         // get fs to give you abs path and save files

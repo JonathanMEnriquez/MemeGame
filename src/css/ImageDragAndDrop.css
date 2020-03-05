@@ -24,3 +24,7 @@
 .title-body-modal-content .dropzone-caption {
     padding-top: 4vh;
 }
+
+.title-body-modal-content section {
+    margin: auto;
+}
