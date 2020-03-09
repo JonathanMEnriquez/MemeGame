@@ -1,3 +1,5 @@
-import io from 'socket.io';
+const Server = window.require('socket.io')();
 
-console.log(io);
+console.log(Server);
+
+export default Server;
