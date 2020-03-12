@@ -1,0 +1,14 @@
+.image-preview {
+    width: 24%;
+    padding: 0.5vh 0.25vw;
+}
+
+.image-preview img.image {
+    width: 80%;
+    padding: 5% 10%;
+    border: 2px solid black;
+}
+
+.image-preview .no-actions {
+    opacity: 0.2;
+}

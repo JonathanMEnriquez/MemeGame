@@ -28,3 +28,8 @@
 .title-body-modal-content section {
     margin: auto;
 }
+
+.title-body-modal-content .dashboard {
+    width: 100%;
+    height: 100%;
+}
