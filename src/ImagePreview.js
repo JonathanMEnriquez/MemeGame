@@ -1,21 +1,34 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './css/ImagePreview.css';
+import Delete from './img/cross.png';
 
 const ImagePreview = (props) => {
-    let { src } = props;
-    const { onDisk, isLive, alt } = props;
-    if (onDisk) {
-        src = src.replace('/src', '');
+    const { removeImage, isLive, alt, src, id } = props;
+    const [options, setOptions] = useState(false);
+    
+    const deleteImg = () => {
+        console.log('delete me!');
+        removeImage(id);
+    };
+
+    const showOptions = () => {
+        setOptions(true);
     }
 
-    // const Img = require('./memes/meme-934175.jpg');
+    const hideOptions = () => {
+        setOptions(false);
+    }
 
     return (
-        <div className='image-preview'>
-            <div className='image-preview-header'>
-                hola
+        <div className='image-preview' onMouseEnter={showOptions} onMouseLeave={hideOptions}>
+            <div className="image-preview-body">
+                {options &&
+                <div className="image-options">
+                    <img src={Delete} alt='x' onClick={deleteImg} />
+                </div>
+                }
+                <img src={src} alt={alt} className={isLive ? 'image' : 'image no-actions'} />
             </div>
-            <img src={src} alt={alt} className={isLive ? 'image' : 'image no-actions'} />
         </div>
     )
 }

@@ -1,11 +1,7 @@
-const {
-  app, 
-  BrowserWindow,
-  ipcMain
-} = require('electron');
+const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const isDev = require('electron-is-dev');
-require('./ipcMain');
+const MainIpc = require('./ipcMain');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -21,6 +17,8 @@ function createWindow () {
     }
   })
 
+  new MainIpc(win);
+
   // and load the index.html of the app.
   win.loadURL(
       isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../build/index.html")}`
@@ -35,6 +33,14 @@ function createWindow () {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     win = null
+  })
+
+  win.on('ipc-message', (event, channel, ...args) => {
+    console.info('Ipc async message sent: ', event, channel, args);
+  })
+
+  win.on('ipc-message-sync', (event, channel, ...args) => {
+    console.info('Ipc syncronous message sent: ', event, channel, args);
   })
 }
 

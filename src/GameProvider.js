@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import GameContext from './GameContext';
 import { generateJoinCode } from './utils/Randoms';
+import Renderer from './Renderer';
 
 class GameProvider extends Component {
     state = {
@@ -15,6 +16,24 @@ class GameProvider extends Component {
         players: [],
         maxPlayers: 6,
         gameIsFull: false,
+        memes: [],
+    }
+
+    componentDidMount() {
+        this.retrieveImages();
+    }
+
+    setMemes(memes) {
+        if (memes.length !== this.state.memes.length) {
+            this.setState({ memes: memes });
+        }
+    }
+
+    retrieveImages() {
+        const renderer = new Renderer();
+        console.log('hola amigito ', renderer);
+        const memes = renderer.retrieveAllImages();
+        this.setState({memes: memes});
     }
 
     generateCode() {
@@ -40,7 +59,7 @@ class GameProvider extends Component {
     }
 
     render() {
-        const { gameMode, modes, code, players } = this.state;
+        const { gameMode, modes, code, players, memes } = this.state;
 
         return ( 
             <GameContext.Provider
@@ -51,6 +70,8 @@ class GameProvider extends Component {
                     code: code,
                     players: players,
                     addPlayer: (player) => this.addPlayer(player),
+                    memes: memes,
+                    setMemes: (memes) => this.setState({ memes: memes }),
                 }}
             >
                 {this.props.children}

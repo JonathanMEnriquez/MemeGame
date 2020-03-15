@@ -4,6 +4,7 @@ class MemeValidator {
         'playable', 'addedOn', 'updatedOn'];
     }
     validate(meme) {
+        console.info('validating meme: ', meme.alt);
         if (!meme) {
             return false;
         }

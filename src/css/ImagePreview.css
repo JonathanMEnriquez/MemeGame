@@ -1,12 +1,35 @@
 .image-preview {
-    width: 24%;
-    padding: 0.5vh 0.25vw;
+    width: 22%;
+    display: inline-block;
+    text-align: center;
 }
 
-.image-preview img.image {
-    width: 80%;
-    padding: 5% 10%;
-    border: 2px solid black;
+.image-preview:not(:first-child) {
+    margin-left: 4%;
+}
+
+.image-preview .image-preview-body {
+    width: 100%;
+    position: relative;
+}
+
+.image-preview .image-preview-body .image-options {
+    text-align: right;
+    width: 100%;
+    position: absolute;
+}
+
+.image-preview .image-preview-body .image-options img {
+    cursor: pointer;
+    width: 5%;
+    min-width: 24px;
+    z-index: 1000;
+    padding-top: 4px;
+}
+
+.image-preview .image-preview-body img.image {
+    width: 100%;
+    border: 2px solid rgb(75, 75, 75);
 }
 
 .image-preview .no-actions {
