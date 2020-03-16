@@ -11,8 +11,7 @@ const MemeStore = require('./MemeStore');
 const memeStore = new MemeStore({ name: 'MemesMain' });
 
 class MainIpc {
-    constructor(mainWindow) {
-        this.win = mainWindow;
+    constructor() {
         this.init();
     }
 
