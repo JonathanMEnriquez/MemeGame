@@ -20,11 +20,8 @@ class MainIpc {
     init() {
         ipcMain.on(ADD_IMAGE, (e, img) => {
             if (validator.validate(img)) {
-                const ref = memeStore.addMeme(img);
-                console.log(ref.memes.length);
-                console.log('\n yay!');
-                // check if stored includes meme
-                e.returnValue = true;
+                const added = memeStore.addMeme(img);
+                e.returnValue = added;
             } else {
                 console.error('Failed validation.');
                 e.returnValue = false;

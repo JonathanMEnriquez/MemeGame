@@ -19,9 +19,8 @@ class Renderer {
     }
 
     retrieveAllImages() {
-        console.info('Requesting that all images be resent from the store.');
+        console.info('Requesting that all images be sent from the store.');
         const images = ipcRenderer.sendSync(RETRIEVE_ALL_IMAGES);
-        console.log('hola ', images.length);
         return images;
     }
 
@@ -33,11 +32,18 @@ class Renderer {
         } else {
             console.info('Deleted meme to db.');
         }
+        return success;
     }
 
     updateImage(img) {
         console.info('Updating image.', img);
-        ipcRenderer.send(UPDATE_IMAGE, img);
+        const success = ipcRenderer.sendSync(UPDATE_IMAGE, img);
+        if (!success) {
+            console.error('Failed to delete image from db.');
+        } else {
+            console.info('Deleted meme to db.');
+        }
+        return success;
     }
 }
 

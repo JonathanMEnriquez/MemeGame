@@ -31,7 +31,6 @@ class GameProvider extends Component {
 
     retrieveImages() {
         const renderer = new Renderer();
-        console.log('hola amigito ', renderer);
         const memes = renderer.retrieveAllImages();
         this.setState({memes: memes});
     }

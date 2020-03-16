@@ -17,9 +17,10 @@ class MemeStore extends Store {
     }
 
     addMeme(meme) {
-        console.info('Memestore received a request to add an image.', meme.id);
+        console.info('Memestore received a request to add an image: ', meme.id);
+        const prevCount = this.memes.length;
         this.memes = [...this.memes, meme];
-        return this.saveMemes();
+        return prevCount + 1 === this.memes.length;
     }
 
     clearAllMemes() {
