@@ -1,7 +1,8 @@
+const { REQUIRED_MEME_FIELDS } = require('../utils/constants')
+
 class MemeValidator {
     constructor() {
-        this.required = ['id', 'alt', 'data', 'extension', 
-        'playable', 'addedOn', 'updatedOn'];
+        this.required = REQUIRED_MEME_FIELDS;
     }
     validate(meme) {
         console.info('validating meme: ', meme.alt);
@@ -10,6 +11,7 @@ class MemeValidator {
         }
         for (let req of this.required) {
             if (!meme[req]) {
+                console.error('Meme is missing required field: ', req);
                 return false;
             }
         }

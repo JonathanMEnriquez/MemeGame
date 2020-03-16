@@ -7,7 +7,6 @@ const ImagePreview = (props) => {
     const [options, setOptions] = useState(false);
     
     const deleteImg = () => {
-        console.log('delete me!');
         removeImage(id);
     };
 

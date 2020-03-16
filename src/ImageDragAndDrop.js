@@ -67,6 +67,10 @@ class ImageDragAndDrop extends Component {
         this.setState({uploading: false});
     }
 
+    returnToDragAndDropView() {
+        this.setState({'dashboard': false, messages: []});
+    }
+
     render() {
         const { uploading, dashboard, previewImages, messages } = this.state;
         const icon = { src: UploadImg, alt: 'Add Image(s)' };
@@ -78,14 +82,18 @@ class ImageDragAndDrop extends Component {
                 }
             {dashboard &&
                 <div className={uploading ? 'dashboard no-action' : 'dashboard'}>
-                    {messages.map((m, key) => {
-                        return <Message temp={1} key={key} timeout={15000} text={m} />;
-                    })
-                    }
+                    <div className="messages">
+                        {messages.map((m, key) => {
+                            return <Message temp={1} key={key} timeout={15000} text={m} />;
+                        })}
+                    </div>
                     {previewImages.map((nImg, i) => {
                         const { id, alt, data } = nImg;
                         return <ImagePreview src={data} alt={alt} key={i} id={id} removeImage={(id) => this.removeImage(id)} isLive={!uploading && dashboard} />
                     })}
+                    {!uploading &&
+                        <p className="upload-more" onClick={this.returnToDragAndDropView.bind(this)}>Upload More Images</p>
+                    }
                 </div>
             }
         </div>
