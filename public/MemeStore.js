@@ -35,6 +35,19 @@ class MemeStore extends Store {
         this.saveMemes();
         return prevCount - 1 === this.memes.length;
     }
+
+    updateMeme(meme) {
+        let memeFound = false;
+        for (let i = 0; i < this.memes.length; i++) {
+            if (this.memes[i].id === meme.id) {
+                this.memes[i] = meme;
+                memeFound = true;
+                break;
+            }
+        }
+        this.saveMemes();
+        return memeFound;
+    }
 }
 
 module.exports = MemeStore;

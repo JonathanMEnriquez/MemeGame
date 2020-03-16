@@ -3,8 +3,7 @@ const {
     RETRIEVE_ALL_IMAGES, 
     ADD_IMAGE, 
     DELETE_IMAGE, 
-    UPDATE_IMAGE,
-    IMAGES
+    UPDATE_IMAGE
 } = require('../utils/constants');
 const { MemeValidator } = require('./validators');
 const validator = new MemeValidator();
@@ -37,6 +36,12 @@ class MainIpc {
         ipcMain.on(DELETE_IMAGE, (e, id) => {
             console.info('ipcMain received a request to delete img: ', id);
             const success = memeStore.deleteMeme(id);
+            e.returnValue = success;
+        });
+
+        ipcMain.on(UPDATE_IMAGE, (e, img) => {
+            console.info('ipcMain received a request to update an image ', img);
+            const success = memeStore.updateMeme(img);
             e.returnValue = success;
         });
     }

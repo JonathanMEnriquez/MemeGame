@@ -3,5 +3,4 @@ module.exports = {
     ADD_IMAGE: 'add-new-image',
     DELETE_IMAGE: 'remove-image',
     UPDATE_IMAGE: 'update-image',
-    IMAGES: 'all-images',
 }
