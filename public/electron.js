@@ -33,14 +33,6 @@ function createWindow () {
     // when you should delete the corresponding element.
     win = null
   })
-
-  win.on('ipc-message', (event, channel, ...args) => {
-    console.info('Ipc async message sent: ', event, channel, args);
-  })
-
-  win.on('ipc-message-sync', (event, channel, ...args) => {
-    console.info('Ipc syncronous message sent: ', event, channel, args);
-  })
 }
 
 // This method will be called when Electron has finished
