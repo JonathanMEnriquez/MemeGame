@@ -1,7 +1,18 @@
 .image-preview {
-    width: 22%;
+    width: 17vw;
+    height: 17vw;
+    overflow: hidden;
     display: inline-block;
     text-align: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+}
+
+.no-actions {
+    pointer-events: none;
+    opacity: 0.2;
 }
 
 .image-preview:not(:first-child) {
@@ -10,6 +21,7 @@
 
 .image-preview .image-preview-body {
     width: 100%;
+    padding-bottom: 100%;
     position: relative;
 }
 
@@ -29,9 +41,6 @@
 
 .image-preview .image-preview-body img.image {
     width: 100%;
+    overflow: hidden;
     border: 2px solid rgb(75, 75, 75);
-}
-
-.image-preview .no-actions {
-    opacity: 0.2;
 }
