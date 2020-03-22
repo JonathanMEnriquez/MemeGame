@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
 import GameContext from './GameContext';
 import TitleScreen from './TitleScreen';
+import Pregame from './Pregame';
 
 class GameSwitch extends Component {
-    state = {
-        imgLoaded: false
-    }
-
     selectedGameMode() {
         const { gameMode, modes } = this.context;
-        console.log(gameMode, modes);
+
         switch (gameMode) {
             case modes.TITLE:
                 return <TitleScreen />;
+            case modes.PREGAME:
+                return <Pregame />;
             default:
                 return <div>Should not display</div>;
         }

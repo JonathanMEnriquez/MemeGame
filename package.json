@@ -1,8 +1,8 @@
 {
-  "name": "meme",
+  "name": "meme_game",
   "version": "0.1.0",
   "private": true,
-  "description": "A guessing game for travel lovers.",
+  "description": "Amuse your friends with Memes.",
   "author": "github.com/JonathanMEnriquez",
   "dependencies": {
     "@testing-library/jest-dom": "4.2.4",
@@ -10,8 +10,10 @@
     "@testing-library/user-event": "7.1.2",
     "cross-env": "7.0.0",
     "electron-is-dev": "1.1.0",
+    "electron-store": "5.1.1",
     "react": "16.12.0",
     "react-dom": "16.12.0",
+    "react-dropzone": "10.2.1",
     "react-scripts": "3.3.0",
     "socket.io": "2.3.0"
   },
