@@ -17,6 +17,7 @@ class GameProvider extends Component {
         maxPlayers: 6,
         gameIsFull: false,
         memes: [],
+        newMemes: [],
     }
 
     componentDidMount() {
@@ -57,8 +58,18 @@ class GameProvider extends Component {
         return { success: true };
     }
 
+    addMeme(meme) {
+        const dupe = [...this.state.memes, meme]
+        this.setState({memes: dupe});
+    }
+
+    removeMeme(memeId) {
+        const memes = this.state.memes.filter(m => m.id !== memeId);
+        this.setState({memes: memes});
+    }
+
     render() {
-        const { gameMode, modes, code, players, memes } = this.state;
+        const { gameMode, modes, code, players, memes, newMemes } = this.state;
 
         return ( 
             <GameContext.Provider
@@ -69,8 +80,10 @@ class GameProvider extends Component {
                     code: code,
                     players: players,
                     addPlayer: (player) => this.addPlayer(player),
-                    memes: memes,
-                    setMemes: (memes) => this.setState({ memes: memes }),
+                    memes: memes.concat(newMemes),
+                    syncMemes: (memes) => this.setState({ memes: memes }),
+                    addMeme: (meme) => this.addMeme(meme),
+                    removeMeme: (memeId) => this.removeMeme(memeId),
                 }}
             >
                 {this.props.children}

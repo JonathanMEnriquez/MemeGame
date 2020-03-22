@@ -9,7 +9,10 @@ const MenuButton = (props) => {
     };
 
     return (
-        <div className="menu-button" onClick={clickHandler}>{allCaps(text)}</div>
+        <div className="menu-button"
+            onClick={clickHandler} >
+                {allCaps(text)}
+        </div>
     )
 };
 

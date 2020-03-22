@@ -1,6 +1,6 @@
 .image-preview {
-    width: 17vw;
-    height: 17vw;
+    width: 16vw;
+    height: 16vw;
     overflow: hidden;
     display: inline-block;
     text-align: center;
@@ -12,7 +12,12 @@
 
 .no-actions {
     pointer-events: none;
+    /* clickable? */
     opacity: 0.2;
+}
+
+.clickable {
+    cursor: pointer;
 }
 
 .image-preview:not(:first-child) {

@@ -1,0 +1,21 @@
+.meme-collection {
+    text-align: center;
+    color: rgb(29, 29, 29);
+}
+
+.meme-collection > h1 {
+    font-size: 2.5vw;
+    margin-bottom: 1vh;
+}
+
+.meme-collection .header {
+    text-align: left;
+    margin-top: -4.5vh;
+    background-color: transparent;
+}
+
+.meme-collection .header > .upload-more {
+    cursor: pointer;
+    width: 4vw;
+    display: inline-block;
+}

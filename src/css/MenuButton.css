@@ -1,5 +1,5 @@
 .menu-button {
-    width: 25vw;
+    width: 30vw;
     text-align: center;
     height: 7.5vw;
     cursor: pointer;
@@ -8,8 +8,13 @@
     align-items: center;
     background-color: #f9ad00;
     border-radius: 8px;
-    font-size: 2vw;
+    font-size: 2.5vw;
     margin-bottom: 1vh;
+}
+
+.menu-button:focus,
+.menu-button:active {
+    background-color: black;
 }
 
 /* Small screen */

@@ -1,0 +1,15 @@
+.dynamic-input .input-group {
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.dynamic-input .input-group input {
+    width: 100%;
+}
+
+.dynamic-input .input-group img {
+    cursor: pointer;
+    width: 3vw;
+    margin-left: 2vw;
+}

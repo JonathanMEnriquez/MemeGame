@@ -32,10 +32,13 @@ class ImageDragAndDrop extends Component {
 
     removeImage(imgId) {
         const renderer = new Renderer();
-        const dupe = this.state.previewImages.slice(0).filter(img => img.id !== imgId);
-        this.setState({previewImages: dupe});
-        renderer.deleteImgFromStore(imgId);
-        this.addMessage(`Deleted image from your collection`);
+        const { removeMeme } = this.context;
+        if (renderer.deleteImgFromStore(imgId)) {
+            const dupe = this.state.previewImages.slice(0).filter(img => img.id !== imgId);
+            this.setState({previewImages: dupe});
+            removeMeme(imgId);
+            this.addMessage(`Deleted image from your collection`);
+        }
     }
 
     addMessage(msg) {
@@ -46,19 +49,22 @@ class ImageDragAndDrop extends Component {
     async onDrop(files) {
         this.setState({uploading: true, dashboard: true});
         const renderer = new Renderer();
+        const { addMeme, memes } = this.context;
+        const usedNames = memes.map(m => m.id);
         const images = [...this.state.previewImages];
         for (let f of files) {
             if ('type' in f && f.type.split('/')[0] === 'image') {
                 const splitName = f.name.split('.');
                 const originalName = splitName[0];
                 const extension = '.'.concat(splitName[1]);
-                const imgName = generateUniqueImageName([], extension);
+                const imgName = generateUniqueImageName(usedNames, extension);
                 const imgData = await this.getBase64(f);
                 const newMeme = new Meme(imgName, imgData, extension, originalName);
                 const saved = renderer.storeNewImage(newMeme);
                 if (saved) {
                     images.push(newMeme);
                     this.setState({previewImages: images});
+                    addMeme(newMeme);
                 } else {
                     this.addMessage(`Failed to save ${f.name}`);
                 }
@@ -78,7 +84,7 @@ class ImageDragAndDrop extends Component {
         return (
             <div className="title-body-modal-content">
                 {!uploading && !dashboard &&
-                <Dropzone onDrop={this.onDrop.bind(this)} icon={icon} text="Drop new images to add to your game collection!" />
+                <Dropzone onDrop={this.onDrop.bind(this)} icon={icon} text="Drop new memes to add to your game collection!" />
                 }
             {dashboard &&
                 <div className={uploading ? 'dashboard no-action' : 'dashboard'}>
@@ -88,8 +94,11 @@ class ImageDragAndDrop extends Component {
                         })}
                     </div>
                     {previewImages.map((nImg, i) => {
-                        const { id, alt, data } = nImg;
-                        return <ImagePreview src={data} alt={alt} key={i} id={id} removeImage={(id) => this.removeImage(id)} isLive={!uploading && dashboard} />
+                        return <ImagePreview 
+                                meme={nImg}
+                                key={i} 
+                                removeImage={(id) => this.removeImage(id)}
+                                isLive={!uploading && dashboard} />
                     })}
                     {!uploading &&
                         <p className="upload-more" onClick={this.returnToDragAndDropView.bind(this)}>Upload More Images</p>

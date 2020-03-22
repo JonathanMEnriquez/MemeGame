@@ -3,15 +3,53 @@ import MenuButton from './MenuButton';
 import './css/TitleBody.css';
 import Modal from './Modal';
 import ImageDragAndDrop from './ImageDragAndDrop';
+import Collection from './Collection';
+import MemeDetail from './MemeDetail';
 
 const TitleBody = (props) => {
+    const modalContentOpts = {
+        upload: 'UP',
+        edit: 'ED',
+        detail: 'DE',
+    }
     const { pregameMode } = props;
     const [optionMode, setOptionMode] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const [modalContent, setModalContent] = useState();
+    const [loadedMeme, setLoadedMeme] = useState();
 
-    const modalContent = () => {
-        return <ImageDragAndDrop />
+    const generateModalContent = () => {
+        switch(modalContent) {
+            case modalContentOpts.upload:
+                return <ImageDragAndDrop />;
+            case modalContentOpts.edit:
+                return <Collection 
+                        uploadMode={setUploadMode}
+                        showMemeDetail={setDetailMode} />
+            case modalContentOpts.detail:
+                return <MemeDetail
+                        meme={loadedMeme} 
+                        returnToCollectionView={setEditMode} />
+            default:
+                return <div></div>
+        }
+
     };
+
+    const setUploadMode = () => {
+        setModalContent(modalContentOpts.upload);
+        setShowModal(true);
+    }
+
+    const setEditMode = () => {
+        setModalContent(modalContentOpts.edit);
+        setShowModal(true);
+    }
+
+    const setDetailMode = (meme) => {
+        setLoadedMeme(meme);
+        setModalContent(modalContentOpts.detail);
+    }
 
     return (
         <div className="title-body">
@@ -23,11 +61,15 @@ const TitleBody = (props) => {
                 <div>Options</div>
             </div>
             <div className={optionMode ? 'menu' : 'hidden'}>
-                <MenuButton text="Back" clickHandler={() => setOptionMode(false)} />
-                <MenuButton text="Add Your Images" clickHandler={() => setShowModal(true)} />
+                <MenuButton text="Back" 
+                            clickHandler={() => setOptionMode(false)} />
+                <MenuButton text="Collection"
+                            clickHandler={setEditMode.bind(this)} />
+                <MenuButton text="Add Memes"
+                            clickHandler={setUploadMode.bind(this)} />
             </div>
             {showModal &&
-                <Modal body={modalContent()} closeMethod={() => setShowModal(false)} />
+                <Modal body={generateModalContent()} closeMethod={() => setShowModal(false)} />
             }
         </div>
     )

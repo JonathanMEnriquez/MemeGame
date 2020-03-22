@@ -30,7 +30,7 @@ class Renderer {
         if (!success) {
             console.error('Failed to delete image from db.');
         } else {
-            console.info('Deleted meme to db.');
+            console.info('Deleted meme from db.');
         }
         return success;
     }
@@ -39,9 +39,9 @@ class Renderer {
         console.info('Updating image.', img);
         const success = ipcRenderer.sendSync(UPDATE_IMAGE, img);
         if (!success) {
-            console.error('Failed to delete image from db.');
+            console.error('Failed to update image.');
         } else {
-            console.info('Deleted meme to db.');
+            console.info('Updated image.');
         }
         return success;
     }

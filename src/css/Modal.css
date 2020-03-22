@@ -25,9 +25,9 @@
 
 .modal .modal-dialog {
     min-width: 500px;
-    width: 70vw;
+    width: 88vw;
     min-height: 300px;
-    height: 70vh;
+    height: 88vh;
     margin: 0 auto;
     padding: 4vh 4vw;
     overflow-y: auto;

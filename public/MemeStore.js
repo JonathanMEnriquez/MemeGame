@@ -11,9 +11,14 @@ class MemeStore extends Store {
         return this;
     }
 
+    refresh() {
+        this.memes = this.get('memes') || [];
+    }
+
     getMemes() {
         console.info('Memestore will get all memes from storage.');
-        return this.get('memes') || [];
+        console.log(this.memes.map(m => m.id));
+        return this.memes;
     }
 
     addMeme(meme) {
@@ -37,16 +42,15 @@ class MemeStore extends Store {
     }
 
     updateMeme(meme) {
-        let memeFound = false;
-        for (let i = 0; i < this.memes.length; i++) {
-            if (this.memes[i].id === meme.id) {
-                this.memes[i] = meme;
-                memeFound = true;
-                break;
-            }
+        console.info('Memestore received a request to update an image: ' + meme.id);
+        const idx = this.memes.findIndex(m => m.id === meme.id);
+        if (idx > -1) {
+            meme.updateOn = new Date().toUTCString();
+            this.memes[idx] = meme;
+            this.saveMemes();
+            return true;
         }
-        this.saveMemes();
-        return memeFound;
+        return false;
     }
 }
 

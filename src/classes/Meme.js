@@ -8,11 +8,6 @@ class Meme {
         this.addedOn = new Date().toUTCString();
         this.updatedOn = new Date().toUTCString();
     }
-
-    update(key, newValue) {
-        this[key] = newValue;
-        this.updatedOn(new Date().toUTCString());
-    }
 }
 
 export default Meme;

@@ -39,7 +39,7 @@ class MainIpc {
         });
 
         ipcMain.on(UPDATE_IMAGE, (e, img) => {
-            console.info('ipcMain received a request to update an image ', img);
+            console.info('ipcMain received a request to update an image ', img.id);
             const success = memeStore.updateMeme(img);
             e.returnValue = success;
         });
