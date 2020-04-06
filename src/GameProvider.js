@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import GameContext from './GameContext';
-import { generateJoinCode } from './utils/Randoms';
+import { generateJoinCode, getRandomHand } from './utils/Randoms';
 import Renderer from './Renderer';
+import ioServer from './Socket';
+import Constants from './utils/Constants';
+import Player from './classes/Player';
 
 class GameProvider extends Component {
     state = {
@@ -18,6 +21,10 @@ class GameProvider extends Component {
         gameIsFull: false,
         memes: [],
         newMemes: [],
+        ioServer: null,
+        memesInPlay: [],
+        judge: 0,
+        round: 1,
     }
 
     componentDidMount() {
@@ -30,31 +37,41 @@ class GameProvider extends Component {
         }
     }
 
+    generateCallbacks() {
+        let callbacks = {};
+        callbacks[Constants.SOCKET_ADD_PLAYER] = (id, name, socket) => this.addPlayer(id, name, socket);
+        return callbacks;
+    }
+
     retrieveImages() {
         const renderer = new Renderer();
         const memes = renderer.retrieveAllImages();
         this.setState({memes: memes});
     }
 
-    generateCode() {
-        const code = generateJoinCode();
-        this.setState({ code: code });
-    }
-
     setToPregameMode() {
-        this.generateCode();
-        this.setState({ gameMode: this.state.modes.PREGAME });
+        if (!this.state.ioServer) {
+            const gameCode = generateJoinCode();
+            const server = new ioServer(gameCode, this.generateCallbacks());
+            console.log('server ', server);
+            this.setState({ gameMode: this.state.modes.PREGAME, code: gameCode, ioServer: server });
+        }
     }
 
-    addPlayer(player) {
+    addPlayer(id, name, socket) {
         if (this.state.gameIsFull) {
             return { success: false, error: 'Game is full.' };
         }
 
-        this.state.players.push(player);
+        const player = new Player(id, name, socket);
+        const playersDupe = [...this.state.players, player];
+        this.setState({players: playersDupe});
+        
         if (this.state.players.length === this.state.maxPlayers) {
-            this.setToPregameMode({ gameIsFull: true });
+            this.setState({ gameIsFull: true });
         }
+
+        this.givePlayerHand(player.socket);
         return { success: true };
     }
 
@@ -68,8 +85,26 @@ class GameProvider extends Component {
         this.setState({memes: memes});
     }
 
+    getHand() {
+        const hand = getRandomHand(this.state.memes, this.state.memesInPlay, 3);
+        const inPlay = [...this.state.memesInPlay, ...hand];
+        this.setState({memesInPlay: inPlay});
+        return hand;
+    }
+
+    async givePlayerHand(socket) {
+        const playerHand = this.getHand();
+        try {
+            const res = await this.state.ioServer.sendHand(socket, playerHand);
+            console.log(res);
+        } catch(err) {
+            console.error(err);
+        }
+    }
+
     render() {
-        const { gameMode, modes, code, players, memes, newMemes } = this.state;
+        const { gameMode, modes, code, players, memes, newMemes,
+                memesInPlay, judge, round } = this.state;
 
         return ( 
             <GameContext.Provider
@@ -79,11 +114,13 @@ class GameProvider extends Component {
                     pregameMode: this.setToPregameMode.bind(this),
                     code: code,
                     players: players,
-                    addPlayer: (player) => this.addPlayer(player),
                     memes: memes.concat(newMemes),
                     syncMemes: (memes) => this.setState({ memes: memes }),
                     addMeme: (meme) => this.addMeme(meme),
                     removeMeme: (memeId) => this.removeMeme(memeId),
+                    memesInPlay: memesInPlay,
+                    judge: judge,
+                    round: round,
                 }}
             >
                 {this.props.children}

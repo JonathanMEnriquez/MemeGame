@@ -12,7 +12,6 @@
 
 .no-actions {
     pointer-events: none;
-    /* clickable? */
     opacity: 0.2;
 }
 

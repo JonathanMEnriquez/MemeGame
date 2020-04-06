@@ -4,8 +4,12 @@ const _generateImageName = () => {
 }
 
 export function generateJoinCode() {
-    const alphanumeric = Math.random().toString(36).replace('0.', '');
-    return alphanumeric.slice(0, 6);
+    let code = '';
+    for (let i = 0; i < 4; i++) {
+        const char = Math.floor(Math.random() * 26) + 65;
+        code += String.fromCharCode(char);
+    }
+    return code;
 }
 
 export function generateUniqueImageName(list, ext) {
@@ -14,4 +18,27 @@ export function generateUniqueImageName(list, ext) {
         imgName = _generateImageName();
     }
     return imgName.concat(ext);
+}
+
+const _getRandomCard = (pile) => {
+    return pile[Math.floor(Math.random() * pile.length)];
+}
+
+export function getRandomCardFromPile(pile, taken) {
+    let card = _getRandomCard(pile);
+    while (taken.includes(card.id)) {
+        card = _getRandomCard(pile);
+    }
+    return card;
+}
+
+export function getRandomHand(pile, taken, total) {
+    let hand = [];
+    while (total) {
+        const card = getRandomCardFromPile(pile, taken);
+        taken.push(card.id);
+        hand.push(card);
+        total -= 1;
+    }
+    return hand;
 }
