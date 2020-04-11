@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import GameContext from './GameContext';
 import TitleScreen from './TitleScreen';
 import Pregame from './Pregame';
+import LiveGame from './LiveGame';
 
 class GameSwitch extends Component {
     selectedGameMode() {
@@ -12,6 +13,8 @@ class GameSwitch extends Component {
                 return <TitleScreen />;
             case modes.PREGAME:
                 return <Pregame />;
+            case modes.LIVEGAME:
+                return <LiveGame />;
             default:
                 return <div>Should not display</div>;
         }

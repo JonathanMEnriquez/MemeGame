@@ -53,9 +53,26 @@ class GameProvider extends Component {
         if (!this.state.ioServer) {
             const gameCode = generateJoinCode();
             const server = new ioServer(gameCode, this.generateCallbacks());
-            console.log('server ', server);
             this.setState({ gameMode: this.state.modes.PREGAME, code: gameCode, ioServer: server });
         }
+    }
+
+    startGame() {
+        console.log('Starting the game.');
+        this.startNewRound();
+        this.setState({ gameMode: this.state.modes.LIVEGAME });
+    }
+
+    startNewRound() {
+        const { players, round } = this.state;
+        let { judge } = this.state;
+        if (judge >= this.state.players.length) {
+            judge = 0;
+        }
+
+        this.state.ioServer.startRound(players, judge, round);
+
+        this.setState({round: round + 1, judge: judge + 1});
     }
 
     addPlayer(id, name, socket) {
@@ -72,7 +89,6 @@ class GameProvider extends Component {
         }
 
         this.givePlayerHand(player.socket);
-        return { success: true };
     }
 
     addMeme(meme) {
@@ -96,7 +112,7 @@ class GameProvider extends Component {
         const playerHand = this.getHand();
         try {
             const res = await this.state.ioServer.sendHand(socket, playerHand);
-            console.log(res);
+            console.log('Successfully added new player. ', res);
         } catch(err) {
             console.error(err);
         }
@@ -121,6 +137,8 @@ class GameProvider extends Component {
                     memesInPlay: memesInPlay,
                     judge: judge,
                     round: round,
+                    liveGameMode: this.startGame.bind(this),
+                    startRound: this.startNewRound.bind(this),
                 }}
             >
                 {this.props.children}

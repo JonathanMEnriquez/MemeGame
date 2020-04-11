@@ -4,12 +4,13 @@ import GameContext from './GameContext';
 import MenuButton from './MenuButton';
 
 const Pregame = (props) => {
-    const { code, players, gameIsFull } = useContext(GameContext);
+    const { code, players, gameIsFull, liveGameMode } = useContext(GameContext);
     const playerColors = ['#4dc9d1', '#d337b2', '#073a94', '#eee457', '#8fec6a', '#e97f7f'];
 
     const startGameClickHandler = () => {
         if (players.length > 1) {
             console.log('let us do this!');
+            liveGameMode();
         }
     }
 

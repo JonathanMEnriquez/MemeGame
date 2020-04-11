@@ -7,6 +7,20 @@ function ioServer(code, callbacks) {
     self.callbacks = callbacks;
     self.initialized = false;
 
+    self.startRound = (players, judgeIdx, round) => {
+        console.log('socket starting round ' + round);
+        const judge = players[judgeIdx];
+        console.log('all players ', players);
+        const rest = players.filter(p => p !== judge);
+        console.log('rest: ', rest);
+
+        judge.socket.emit(Constants.SOCKET_START_ROUND_AS_JUDGE, { round: round });
+
+        rest.forEach(p => {
+            p.socket.emit(Constants.SOCKET_START_ROUND_AS_PLAYER, { round: round });
+        });
+    };
+
     self.sendHand = (playerSocket, cards) => {
         console.log('called ioserver sendhand');
         return new Promise((resolve, reject) => {
