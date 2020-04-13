@@ -90,7 +90,7 @@ class ImageDragAndDrop extends Component {
                 <div className={uploading ? 'dashboard no-action' : 'dashboard'}>
                     <div className="messages">
                         {messages.map((m, key) => {
-                            return <Message temp={1} key={key} timeout={15000} text={m} />;
+                            return <Message temp={1} key={key} timeout={10000} text={m} />;
                         })}
                     </div>
                     {previewImages.map((nImg, i) => {

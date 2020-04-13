@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import GameContext from './GameContext';
-import { generateJoinCode, getRandomHand } from './utils/Randoms';
+import { generateJoinCode } from './utils/Randoms';
 import Renderer from './Renderer';
 import ioServer from './Socket';
 import Constants from './utils/Constants';
 import Player from './classes/Player';
+import Deck from './classes/Deck';
+import Round from './classes/Round';
+import CaptionsCollection from './classes/Captions';
 
 class GameProvider extends Component {
     state = {
@@ -18,28 +21,36 @@ class GameProvider extends Component {
         code: '',
         players: [],
         maxPlayers: 6,
+        cardsPerHand: 7,
         gameIsFull: false,
         memes: [],
-        newMemes: [],
         ioServer: null,
-        memesInPlay: [],
         judge: 0,
-        round: 1,
+        roundNumber: 1,
+        round: null,
+        rounds: [],
+        deck: null,
+        captions: null,
+        automaticProgressGame: true,
+        isFinalRound: false,
+        goalWins: 5,
+        // 5 mins
+        maxTimePerRound: 1000 * 60 * 5,
     }
 
     componentDidMount() {
         this.retrieveImages();
+        this.setupCaptions();
     }
 
-    setMemes(memes) {
-        if (memes.length !== this.state.memes.length) {
-            this.setState({ memes: memes });
-        }
+    setupCaptions() {
+        this.setState({ captions: new CaptionsCollection() });
     }
 
     generateCallbacks() {
         let callbacks = {};
         callbacks[Constants.SOCKET_ADD_PLAYER] = (id, name, socket) => this.addPlayer(id, name, socket);
+        callbacks[Constants.SOCKET_SEND_ROUND_SUBMISSION] = (name, cardId, round) => this.addSubmissionToRound(name, cardId, round);
         return callbacks;
     }
 
@@ -49,30 +60,76 @@ class GameProvider extends Component {
         this.setState({memes: memes});
     }
 
+    _gameCanGoToPregameMode() {
+        // TODO: update this logic to reflect the max players
+        return this.state.memes.length;
+    }
+
     setToPregameMode() {
+        if (this._gameCanGoToPregameMode()) {
+            this.initializeSocketServer();
+            this.initializeDeck();
+            this.setState({ gameMode: this.state.modes.PREGAME });
+        }
+    }
+
+    initializeSocketServer() {
         if (!this.state.ioServer) {
             const gameCode = generateJoinCode();
             const server = new ioServer(gameCode, this.generateCallbacks());
-            this.setState({ gameMode: this.state.modes.PREGAME, code: gameCode, ioServer: server });
+            this.setState({ code: gameCode, ioServer: server });
         }
     }
 
-    startGame() {
-        console.log('Starting the game.');
+    initializeDeck() {
+        if (!this.state.deck) {
+            this.setState({deck: new Deck(this.state.memes)});
+        }
+    }
+
+    addSubmissionToRound(name, cardId, round) {
+        console.log('adding submission ', name, cardId, round);
+        if (round === this.state.round.number) {
+            if (this.state.round.addSubmission(name, cardId)) {
+                const player = this.state.players.find(pl => pl.name === name);
+                const card = this.state.deck.getRandomCard();
+                console.log('about to send card ', card, player);
+                if (player && card) {
+                    console.log('sending card to ' + player.name);
+                    this.state.ioServer.sendCard(player.socket, card);
+                    this.forceUpdate();
+                }
+            }
+        }
+    }
+
+    setToLiveGameMode() {
         this.startNewRound();
-        this.setState({ gameMode: this.state.modes.LIVEGAME });
+        this.setState({gameMode: this.state.modes.LIVEGAME});
     }
 
     startNewRound() {
-        const { players, round } = this.state;
-        let { judge } = this.state;
-        if (judge >= this.state.players.length) {
-            judge = 0;
+        const { roundNumber, round, rounds, judge, players, deck, captions } = this.state;
+        if (this.state.roundNumber >= this.state.players.length) {
+            this.setState({judge: 0});
         }
 
-        this.state.ioServer.startRound(players, judge, round);
+        if (round) {
+            const dupe = [...rounds, round];
+            this.setState({ rounds: dupe });
+        }
 
-        this.setState({round: round + 1, judge: judge + 1});
+        console.log('Starting new round ' + roundNumber);
+        const roundJudge = players[judge];
+        const rest = players.filter(p => p !== roundJudge);
+        const caption = captions.getRandomCaption();
+        const newRound = new Round(roundNumber, roundJudge, caption);
+        // checks to see if there are enough cards for a following round
+        const enoughCardsForAnotherRound = deck.hasEnoughCardsForNextRound(players.length, 1);
+
+        this.state.ioServer.startRound(roundJudge, rest, roundNumber);
+
+        this.setState({ judge: judge + 1, roundNumber: roundNumber + 1, round: newRound, isFinalRound: !enoughCardsForAnotherRound });
     }
 
     addPlayer(id, name, socket) {
@@ -82,13 +139,14 @@ class GameProvider extends Component {
 
         const player = new Player(id, name, socket);
         const playersDupe = [...this.state.players, player];
-        this.setState({players: playersDupe});
+        this.setState({ players: playersDupe });
         
         if (this.state.players.length === this.state.maxPlayers) {
             this.setState({ gameIsFull: true });
         }
 
         this.givePlayerHand(player.socket);
+        return { success: true };
     }
 
     addMeme(meme) {
@@ -102,25 +160,29 @@ class GameProvider extends Component {
     }
 
     getHand() {
-        const hand = getRandomHand(this.state.memes, this.state.memesInPlay, 3);
-        const inPlay = [...this.state.memesInPlay, ...hand];
-        this.setState({memesInPlay: inPlay});
-        return hand;
+        return this.state.deck.getRandomHand(this.state.cardsPerHand);
     }
 
     async givePlayerHand(socket) {
         const playerHand = this.getHand();
         try {
             const res = await this.state.ioServer.sendHand(socket, playerHand);
-            console.log('Successfully added new player. ', res);
+            console.log(res);
         } catch(err) {
             console.error(err);
         }
     }
 
+    async getJudgesContinueAction() {
+        console.log('in get judges continue action');
+        const { judge } = this.state.round;
+        const res = await this.state.ioServer.getReadyResponseFromJudge(judge);
+        return res;
+    }
+
     render() {
-        const { gameMode, modes, code, players, memes, newMemes,
-                memesInPlay, judge, round } = this.state;
+        const { gameMode, modes, code, players, memes, judge, round, rounds, 
+                maxTimePerRound, automaticProgressGame, isFinalRound } = this.state;
 
         return ( 
             <GameContext.Provider
@@ -130,15 +192,19 @@ class GameProvider extends Component {
                     pregameMode: this.setToPregameMode.bind(this),
                     code: code,
                     players: players,
-                    memes: memes.concat(newMemes),
+                    memes: memes,
                     syncMemes: (memes) => this.setState({ memes: memes }),
                     addMeme: (meme) => this.addMeme(meme),
                     removeMeme: (memeId) => this.removeMeme(memeId),
-                    memesInPlay: memesInPlay,
                     judge: judge,
+                    isFinalRound: isFinalRound,
                     round: round,
-                    liveGameMode: this.startGame.bind(this),
-                    startRound: this.startNewRound.bind(this),
+                    rounds: rounds,
+                    startNewRound: this.startNewRound.bind(this),
+                    liveGameMode: this.setToLiveGameMode.bind(this),
+                    automaticProgressGame: automaticProgressGame,
+                    maxTimePerRound: maxTimePerRound,
+                    getJudgesContinueAction: this.getJudgesContinueAction.bind(this),
                 }}
             >
                 {this.props.children}

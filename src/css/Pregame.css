@@ -11,7 +11,7 @@
     grid-row: 1 / 2;
     height: 98%;
     width: 98%;
-    padding: 2%;
+    padding: 8px;
     display: flex;
     flex-wrap: wrap;
 }
@@ -21,13 +21,14 @@
     width: 30%;
     border: 0.25vw dotted rgb(223, 223, 223);
     border-radius: 0.75vw;
-    padding: 8px;
+    padding: 1%;
     height: 48%;
     text-align: center;
     font-size: 3vw;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 0.5%;
 }
 
 .pregame .players .player:not(:nth-child(3)) {

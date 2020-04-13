@@ -42,3 +42,7 @@ export function getRandomHand(pile, taken, total) {
     }
     return hand;
 }
+
+export function pileHasEnoughCardsToBegin(pileLength, perPlayer, playersAmount) {
+    return pileLength && perPlayer && playersAmount && (perPlayer * playersAmount) >= pileLength;
+} 

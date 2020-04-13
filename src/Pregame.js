@@ -1,11 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import './css/Pregame.css';
 import GameContext from './GameContext';
 import MenuButton from './MenuButton';
 
 const Pregame = (props) => {
     const { code, players, gameIsFull, liveGameMode } = useContext(GameContext);
-    const playerColors = ['#4dc9d1', '#d337b2', '#073a94', '#eee457', '#8fec6a', '#e97f7f'];
 
     const startGameClickHandler = () => {
         if (players.length > 1) {
@@ -20,7 +19,7 @@ const Pregame = (props) => {
                 {players.map((player, key) => {
                     return (
                         <div key={key}
-                            style={{color: playerColors[key]}}
+                            style={{color: player.color}}
                             className="player"
                         >{player.name}</div>
                     )
