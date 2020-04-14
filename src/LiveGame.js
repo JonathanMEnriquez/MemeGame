@@ -1,6 +1,7 @@
 import React, {useContext, useState} from 'react';
 import './css/LiveGame.css';
 import GameContext from './GameContext';
+import SubmissionsDisplay from './SubmissionsDisplay';
 
 const LiveGame = (props) => {
     const { players, round, judge, automaticProgressGame, 
@@ -11,7 +12,7 @@ const LiveGame = (props) => {
         caption: 'ca',
         display: 'di',
         winner: 'wi',
-        playerVote: 'pl',
+        select: 'se',
     }
     const [liveGameMode, setLiveGameMode] = useState(liveGameStates.round);
 
@@ -57,6 +58,13 @@ const LiveGame = (props) => {
                         </div>
                     </div>
                 )
+            case liveGameStates.display:
+                return <SubmissionsDisplay 
+                        deck={deck} 
+                        round={round}
+                        automaticProgressGame={automaticProgressGame}
+                        setGameModeToVote={() => setLiveGameMode(liveGameStates.select)}
+                        judge={judge} />
             default:
                 return <div>Something has gone wrong.</div>
         }
@@ -75,7 +83,7 @@ const LiveGame = (props) => {
         if (allPlayersHaveSubmitted()) {
             if (await getJudgesContinueAction()) {
                 console.log('woooot');
-                setLiveGameMode(liveGameMode.display);
+                setLiveGameMode(liveGameStates.display);
             } else {
                 console.log("something bad happened");
             }

@@ -51,6 +51,30 @@ class Round {
     submissionsSize() {
         return this.submissions.length;
     }
+
+    _getRandomSubmissionIndex(subs) {
+        return Math.floor(Math.random() * subs.length);
+    }
+
+    _swapTwoRandomSubmissions(subs) {
+        const randIdx1 = this._getRandomSubmissionIndex(subs);
+        const randIdx2 = this._getRandomSubmissionIndex(subs);
+        if (randIdx1 !== randIdx2) {
+            const tempVal = subs[randIdx1];
+            subs[randIdx1] = subs[randIdx2];
+            subs[randIdx2] = tempVal;
+        }
+    }
+
+    shuffleAndReturnSubmissions() {
+        let subs = [...this.submissions];
+
+        for (let i = 0; i < subs.length; i++) {
+            this._swapTwoRandomSubmissions(subs);
+        }
+
+        return subs;
+    }
 }
 
 export default Round;

@@ -21,7 +21,7 @@ class GameProvider extends Component {
         code: '',
         players: [],
         maxPlayers: 6,
-        cardsPerHand: 7,
+        cardsPerHand: 3,
         gameIsFull: false,
         memes: [],
         ioServer: null,
@@ -182,7 +182,7 @@ class GameProvider extends Component {
 
     render() {
         const { gameMode, modes, code, players, memes, judge, round, rounds, 
-                maxTimePerRound, automaticProgressGame, isFinalRound } = this.state;
+                maxTimePerRound, automaticProgressGame, isFinalRound, deck } = this.state;
 
         return ( 
             <GameContext.Provider
@@ -205,6 +205,7 @@ class GameProvider extends Component {
                     automaticProgressGame: automaticProgressGame,
                     maxTimePerRound: maxTimePerRound,
                     getJudgesContinueAction: this.getJudgesContinueAction.bind(this),
+                    deck: deck,
                 }}
             >
                 {this.props.children}
