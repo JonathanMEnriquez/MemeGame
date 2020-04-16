@@ -180,6 +180,10 @@ class GameProvider extends Component {
         return res;
     }
 
+    sendChoicesForSelecting(choices) {
+        this.state.ioServer.sendChoicesForSelecting(this.state.players, choices);
+    }
+
     render() {
         const { gameMode, modes, code, players, memes, judge, round, rounds, 
                 maxTimePerRound, automaticProgressGame, isFinalRound, deck } = this.state;
@@ -206,6 +210,7 @@ class GameProvider extends Component {
                     maxTimePerRound: maxTimePerRound,
                     getJudgesContinueAction: this.getJudgesContinueAction.bind(this),
                     deck: deck,
+                    sendChoicesForSelecting: (choices) => this.sendChoicesForSelecting(choices),
                 }}
             >
                 {this.props.children}

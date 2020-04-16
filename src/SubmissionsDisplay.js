@@ -5,7 +5,7 @@ const SubmissionsDisplay = (props) => {
     const { deck, round, setGameModeToVote, shuffledSubmissions } = props;
     console.log(shuffledSubmissions, props);
     const [submission, setSubmission] = useState();
-    const timePerSubmission = 1000 * 8;
+    const timePerSubmission = 1000 * 10;
 
     const setSubmissionToDisplay = (idx) => {
         console.log('set submission called with idx ', idx);

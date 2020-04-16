@@ -50,6 +50,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    /* text-transform: uppercase; */
 }
 
 .submissions-display .meme-display .submissions-caption > p {

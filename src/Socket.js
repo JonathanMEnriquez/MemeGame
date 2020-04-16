@@ -54,6 +54,12 @@ function ioServer(code, callbacks) {
         });
     }
 
+    self.sendChoicesForSelecting = (players, choices) => {
+        players.forEach(player => {
+            player.socket.emit(Constants.SOCKET_SEND_OPTIONS_TO_PLAYERS, {choices});
+        });
+    }
+
     if (!self.initialized) {
         self.io.sockets.on('connection', function(socket) {
             console.log('Socket connection made');
