@@ -7,7 +7,10 @@ class Player {
         this.socket = socket;
         this.points = 0;
         this.color = this.getOrGenerateRandomColor();
-        console.log('player color ', this.color);
+    }
+
+    addPoints() {
+        this.points += 2;
     }
 
     addPoint() {

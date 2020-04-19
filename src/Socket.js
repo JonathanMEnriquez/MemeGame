@@ -8,9 +8,7 @@ function ioServer(code, callbacks) {
     self.initialized = false;
 
     self.startRound = (judge, players, round) => {
-        console.log('socket starting round ' + round);
-        console.log('judge: ', judge);
-        console.log('rest: ', players);
+        console.info('Socket emitting signals to begin round: ' + round);
 
         judge.socket.emit(Constants.SOCKET_START_ROUND_AS_JUDGE, { round: round });
 
@@ -55,25 +53,31 @@ function ioServer(code, callbacks) {
     }
 
     self.sendChoicesForSelecting = (players, choices) => {
+        console.debug(`Socket about to emit \'${Constants.SOCKET_SEND_OPTIONS_TO_PLAYERS}\' signal: `, choices);
         players.forEach(player => {
             player.socket.emit(Constants.SOCKET_SEND_OPTIONS_TO_PLAYERS, {choices});
         });
     }
 
+    self.sendWinnerInfo = (judgeChoice, playersChoice) => {
+        console.debug(`Socket about to emit ${Constants.SOCKET_SEND_WINNER_INFO}`);
+        self.io.sockets.emit(Constants.SOCKET_SEND_WINNER_INFO, { judgeChoice: judgeChoice, playersChoice: playersChoice });
+    }
+
     if (!self.initialized) {
         self.io.sockets.on('connection', function(socket) {
-            console.log('Socket connection made');
-            console.log('Client socket ID: ', socket.id);
+            console.debug('Socket connection made');
+            console.debug('Client socket ID: ', socket.id);
 
             socket.on(Constants.SOCKET_NEW_CONNECTION, function() {
-                console.log('received connection confirmation');
+                console.debug('received connection confirmation');
                 socket.emit(Constants.SOCKET_SEND_ID, {id: socket.id});
             });
         
             socket.on(Constants.SOCKET_ADD_PLAYER, function(data) {
                 console.info('new player ', data, self.joinCode);
                 if (data.code && data.code !== self.joinCode) {
-                    console.log('wrong code received.')
+                    console.error('wrong code received: ', data);
                     socket.emit(Constants.SOCKET_ADD_PLAYER_ERROR, {error: 'Invalid code submitted.'});
                     return;
                 }
@@ -83,10 +87,17 @@ function ioServer(code, callbacks) {
                 socket.emit(Constants.SOCKET_CONFIRM_PLAYER_ADDED);
             });
 
-            socket.on(Constants.SOCKET_SEND_ROUND_SUBMISSION, (data) => {
-                console.log('received submission. ', data);
+            socket.on(Constants.SOCKET_SEND_ROUND_SUBMISSION, data => {
+                console.debug(`Socket received ${Constants.SOCKET_SEND_ROUND_SUBMISSION} signal with data: ${data}`);
                 if (self.callbacks[Constants.SOCKET_SEND_ROUND_SUBMISSION]) {
                     self.callbacks[Constants.SOCKET_SEND_ROUND_SUBMISSION](data.name, data.id, data.round);
+                }
+            });
+
+            socket.on(Constants.SOCKET_SEND_ROUND_SELECTION, data => {
+                console.debug(`Socket received ${Constants.SOCKET_SEND_ROUND_SELECTION} signal with data: `, data);
+                if (self.callbacks[Constants.SOCKET_SEND_ROUND_SELECTION]) {
+                    self.callbacks[Constants.SOCKET_SEND_ROUND_SELECTION](data);
                 }
             });
         });

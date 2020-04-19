@@ -11,11 +11,22 @@ class Round {
         this.caption = caption;
         this.judge = judge || '';
         this.winner = '';
+        this.playersChoice = '';
         this.submissions = [];
+        this.judgeReady = false;
+        this.complete = false;
     }
 
-    setWinner(name) {
-        this.winner = name;
+    setWinner(name, type) {
+        if (!name) {
+            return
+        }
+
+        if (type === 'judge') {
+            this.winner = name;
+        } else if (type === 'players') {
+            this.playersChoice = name;
+        }
     }
 
     getWinner() {
@@ -74,6 +85,24 @@ class Round {
         }
 
         return subs;
+    }
+
+    getJudgeReady() {
+        return this.judgeReady();
+    }
+
+    setJudgeAsReady() {
+        if (!this.judgeReady) {
+            this.judgeReady = true;
+        }
+    }
+
+    isComplete() {
+        return this.complete;
+    }
+
+    setAsComplete() {
+        this.complete = true;
     }
 }
 

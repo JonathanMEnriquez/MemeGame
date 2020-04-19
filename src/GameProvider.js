@@ -8,6 +8,7 @@ import Player from './classes/Player';
 import Deck from './classes/Deck';
 import Round from './classes/Round';
 import CaptionsCollection from './classes/Captions';
+import BallotCollection from './classes/Ballot';
 
 class GameProvider extends Component {
     state = {
@@ -31,9 +32,10 @@ class GameProvider extends Component {
         rounds: [],
         deck: null,
         captions: null,
+        ballotCollection: null,
         automaticProgressGame: true,
         isFinalRound: false,
-        goalWins: 5,
+        goalPoints: 5,
         // 5 mins
         maxTimePerRound: 1000 * 60 * 5,
     }
@@ -51,6 +53,7 @@ class GameProvider extends Component {
         let callbacks = {};
         callbacks[Constants.SOCKET_ADD_PLAYER] = (id, name, socket) => this.addPlayer(id, name, socket);
         callbacks[Constants.SOCKET_SEND_ROUND_SUBMISSION] = (name, cardId, round) => this.addSubmissionToRound(name, cardId, round);
+        callbacks[Constants.SOCKET_SEND_ROUND_SELECTION] = (data) => this.processSelection(data)
         return callbacks;
     }
 
@@ -58,6 +61,37 @@ class GameProvider extends Component {
         const renderer = new Renderer();
         const memes = renderer.retrieveAllImages();
         this.setState({memes: memes});
+    }
+
+    processSelection(data) {
+        if (!data || data.name === undefined || data.choice === undefined || data.round === undefined) {
+            console.debug('ProcessSelection method did not receive all required values');
+            return
+        }
+
+        if (this._selectionIsValid(data)) {
+            console.info('selection is valid');
+            if (data.isJudge){
+                this.state.ballotCollection.setAsJudgeChoice(data.choice);
+            } else {
+                this.state.ballotCollection.addVote(data.name, data.choice);
+            }
+
+            this.forceUpdate();
+        } else {
+            console.error('failed validation.');
+        }
+    }
+
+    _judgeDeclarationIsCorrect(data) {
+        return data.isJudge === false || this.state.round.judge.name === data.name;
+    }
+
+    _selectionIsValid(data) {
+        return (
+            data.round === this.state.round.number
+            && this._judgeDeclarationIsCorrect(data)
+        )
     }
 
     _gameCanGoToPregameMode() {
@@ -119,7 +153,7 @@ class GameProvider extends Component {
             this.setState({ rounds: dupe });
         }
 
-        console.log('Starting new round ' + roundNumber);
+        console.info('Starting new round: ' + roundNumber);
         const roundJudge = players[judge];
         const rest = players.filter(p => p !== roundJudge);
         const caption = captions.getRandomCaption();
@@ -129,7 +163,10 @@ class GameProvider extends Component {
 
         this.state.ioServer.startRound(roundJudge, rest, roundNumber);
 
-        this.setState({ judge: judge + 1, roundNumber: roundNumber + 1, round: newRound, isFinalRound: !enoughCardsForAnotherRound });
+        this.setState({ judge: judge + 1, 
+            roundNumber: roundNumber + 1, 
+            round: newRound, isFinalRound: !enoughCardsForAnotherRound,
+            ballotCollection: new BallotCollection() });
     }
 
     addPlayer(id, name, socket) {
@@ -167,26 +204,31 @@ class GameProvider extends Component {
         const playerHand = this.getHand();
         try {
             const res = await this.state.ioServer.sendHand(socket, playerHand);
-            console.log(res);
+            console.info(res);
         } catch(err) {
             console.error(err);
         }
     }
 
     async getJudgesContinueAction() {
-        console.log('in get judges continue action');
         const { judge } = this.state.round;
         const res = await this.state.ioServer.getReadyResponseFromJudge(judge);
         return res;
     }
 
     sendChoicesForSelecting(choices) {
+        console.debug('SendChoicesForSelecting called with ', choices);
         this.state.ioServer.sendChoicesForSelecting(this.state.players, choices);
+    }
+
+    socketSendWinnerInfo(judgeChoice, playersChoice) {
+        this.state.ioServer.sendWinnerInfo(judgeChoice, playersChoice);
     }
 
     render() {
         const { gameMode, modes, code, players, memes, judge, round, rounds, 
-                maxTimePerRound, automaticProgressGame, isFinalRound, deck } = this.state;
+                maxTimePerRound, automaticProgressGame, isFinalRound, deck,
+                ballotCollection } = this.state;
 
         return ( 
             <GameContext.Provider
@@ -211,6 +253,8 @@ class GameProvider extends Component {
                     getJudgesContinueAction: this.getJudgesContinueAction.bind(this),
                     deck: deck,
                     sendChoicesForSelecting: (choices) => this.sendChoicesForSelecting(choices),
+                    ballotCollection: ballotCollection,
+                    socketSendWinnerInfo: (judgeChoice, playersChoice) => this.socketSendWinnerInfo(judgeChoice, playersChoice),
                 }}
             >
                 {this.props.children}

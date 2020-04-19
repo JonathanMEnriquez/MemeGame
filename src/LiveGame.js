@@ -8,7 +8,8 @@ import Vote from './Vote';
 const LiveGame = (props) => {
     const { players, round, judge, automaticProgressGame, 
             deck, maxTimePerRound, startNewRound,
-            getJudgesContinueAction } = useContext(GameContext);
+            getJudgesContinueAction, ballotCollection,
+            socketSendWinnerInfo } = useContext(GameContext);
     const liveGameStates = {
         round: 'ro',
         caption: 'ca',
@@ -16,15 +17,19 @@ const LiveGame = (props) => {
         announceVote: 'an',
         winner: 'wi',
         vote: 'vo',
+        standings: 'st',
+        announceRoundWinner: 'anwi',
     }
     const [announcement, setAnnouncement] = useState(`ROUND ${round.number}`);
     const [liveGameMode, setLiveGameMode] = useState(liveGameStates.round);
     const [shuffledSubmissions, setShuffledSubmissions] = useState();
 
-    console.log(shuffledSubmissions);
-
     const switchAfterTwoSeconds = (liveGameState) => {
         setTimeout(() => setLiveGameMode(liveGameState), 1000 * 2);
+    }
+
+    const switchAfterXSeconds = (liveGameState, milliseconds) => {
+        setTimeout(() => setLiveGameMode(liveGameState), milliseconds);
     }
 
     const getPlayerColor = (name) => {
@@ -80,6 +85,13 @@ const LiveGame = (props) => {
                         players={players}
                         round={round}
                         deck={deck} />
+            case liveGameStates.announceRoundWinner:
+                switchAfterXSeconds(liveGameStates.standings, 5000);
+                return <Announcement content={announcement} />
+            case liveGameStates.standings:
+                return <div>STANDINGS TIME</div>
+            case liveGameStates.winner:
+                return <div>winner</div>
             default:
                 return <div>Something has gone wrong.</div>
         }
@@ -98,17 +110,54 @@ const LiveGame = (props) => {
     };
 
     const checkIfJudgeIsReady = async() => {
-        if (allPlayersHaveSubmitted()) {
+        if (!round.judgeReady && allPlayersHaveSubmitted()) {
             if (await getJudgesContinueAction()) {
                 shuffleSubmissions();
+                round.setJudgeAsReady();
                 setLiveGameMode(liveGameStates.display);
             } else {
-                console.log("something bad happened");
+                console.error("Should not happen.");
             }
         }
     };
 
+    const checkIfAllPlayersHaveVoted = () => {
+        if (!round.isComplete() && allVotesAreIn()) {
+            const judgesChoice = ballotCollection.getJudgesChoice(),
+                playersChoice = ballotCollection.getPeoplesChoice();
+
+            round.setWinner(judgesChoice.name, 'judge');
+            round.setWinner(playersChoice && playersChoice.name, 'players');
+            round.setAsComplete();
+            
+            console.log(judgesChoice, playersChoice);
+
+            const judgeChoicePlayer = players.find(player => player.name === judgesChoice.name);
+            const playersChoicePlayer = players.find(player => playersChoice && player.name === playersChoice.name);
+            judgeChoicePlayer.addPoints();
+            if (playersChoicePlayer) {
+                playersChoicePlayer.addPoint();
+            }
+            const newAnnouncement = `Round winner: \n${judgesChoice.name}\n`
+                    .concat(
+                        playersChoice === undefined ?
+                        `No one earned a majority of the vote of the people` :
+                        `Player's choice: \n${playersChoice.name}`
+                    )
+            setAnnouncement(newAnnouncement);
+            socketSendWinnerInfo(judgesChoice.name, playersChoice && playersChoice.name);
+            setLiveGameMode(liveGameStates.announceRoundWinner);
+
+            // give new judge ability to start round
+        }
+    }
+
+    const allVotesAreIn = () => {
+        return ballotCollection.totalVotesCast() === players.length;
+    };
+
     checkIfJudgeIsReady();
+    checkIfAllPlayersHaveVoted();
 
     return (
         <div className="live-game">
