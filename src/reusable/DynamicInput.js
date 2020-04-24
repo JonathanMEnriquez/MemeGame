@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import './css/DynamicInput.css';
-import Update from './img/enter.png';
+import '../css/DynamicInput.css';
+import Update from '../img/enter.png';
 
 const DynamicInput = (props) => {
     const { text, clickHandler } = props;

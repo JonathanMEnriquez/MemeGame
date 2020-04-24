@@ -1,7 +1,7 @@
 import React from 'react';
 import './css/App.css';
-import GameSwitch from './GameSwitch';
-import GameProvider from './GameProvider';
+import GameSwitch from './components/GameSwitch';
+import GameProvider from './contextStore/GameProvider';
 
 const App = () => {
   return (

@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import GameContext from './GameContext';
-import { generateJoinCode } from './utils/Randoms';
-import Renderer from './Renderer';
-import ioServer from './Socket';
-import Constants from './utils/Constants';
-import Player from './classes/Player';
-import Deck from './classes/Deck';
-import Round from './classes/Round';
-import CaptionsCollection from './classes/Captions';
-import BallotCollection from './classes/Ballot';
+import { generateJoinCode } from '../utils/Randoms';
+import Renderer from '../store/Renderer';
+import ioServer from '../webservices/Socket';
+import Constants from '../utils/Constants';
+import Player from '../classes/Player';
+import Deck from '../classes/Deck';
+import Round from '../classes/Round';
+import CaptionsCollection from '../classes/Captions';
+import BallotCollection from '../classes/Ballot';
 
 class GameProvider extends Component {
     state = {

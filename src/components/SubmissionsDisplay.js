@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import './css/SubmissionsDisplay.css';
+import '../css/SubmissionsDisplay.css';
 
 const SubmissionsDisplay = (props) => {
     const { deck, round, setGameModeToVote, shuffledSubmissions } = props;

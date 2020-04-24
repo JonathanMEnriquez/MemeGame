@@ -1,8 +1,8 @@
 import React from 'react';
-import './css/MemeDetail.css';
-import DynamicInput from './DynamicInput';
-import Renderer from './Renderer';
-import Detail from './reusable/Detail';
+import '../css/MemeDetail.css';
+import DynamicInput from '../reusable/DynamicInput';
+import Renderer from '../store/Renderer';
+import Detail from '../reusable/Detail';
 
 const MemeDetail = (props) => {
     const { meme, returnToCollectionView } = props;

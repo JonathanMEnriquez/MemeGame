@@ -1,5 +1,5 @@
 import React from 'react';
-import './css/MenuButton.css';
+import '../css/MenuButton.css';
 
 const MenuButton = (props) => {
     const { text, clickHandler } = props;

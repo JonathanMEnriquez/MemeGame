@@ -1,6 +1,6 @@
 import React from 'react';
-import './css/Modal.css';
-import Close from './img/cross.png';
+import '../css/Modal.css';
+import Close from '../img/cross.png';
 
 const Modal = (props) => {
     const { body, closeMethod } = props;

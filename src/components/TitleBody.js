@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import MenuButton from './MenuButton';
-import './css/TitleBody.css';
-import Modal from './Modal';
-import ImageDragAndDrop from './ImageDragAndDrop';
-import Collection from './Collection';
+import MenuButton from '../reusable/MenuButton';
+import '../css/TitleBody.css';
+import Modal from '../reusable/Modal';
+// import ImageDragAndDrop from './ImageDragAndDrop';
 import MemeDetail from './MemeDetail';
+import MemeDiscover from './MemeDiscover';
+import Collection from './Collection';
 
 const TitleBody = (props) => {
     const modalContentOpts = {
@@ -21,7 +22,8 @@ const TitleBody = (props) => {
     const generateModalContent = () => {
         switch(modalContent) {
             case modalContentOpts.upload:
-                return <ImageDragAndDrop />;
+                // return <ImageDragAndDrop />;
+                return <MemeDiscover />
             case modalContentOpts.edit:
                 return <Collection 
                         uploadMode={setUploadMode}

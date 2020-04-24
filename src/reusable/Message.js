@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import './css/Message.css';
+import '../css/Message.css';
 import Delete from './img/cross.png';
 
 const Message = (props) => {

@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
-import './css/Vote.css';
-import GameContext from './GameContext';
+import '../css/Vote.css';
+import GameContext from '../contextStore/GameContext';
 
 const Vote = (props) => {
     const { submissions, round, deck } = props;

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Title from './Title';
 import TitleBody from './TitleBody';
-import GameContext from './GameContext';
-import './css/TitleScreen.css';
+import GameContext from '../contextStore/GameContext';
+import '../css/TitleScreen.css';
 
 class TitleScreen extends Component {
     render() {

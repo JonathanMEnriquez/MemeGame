@@ -1,4 +1,4 @@
-import Constants from './utils/Constants';
+import Constants from '../utils/Constants';
 
 function ioServer(code, callbacks) {
     let self = this;

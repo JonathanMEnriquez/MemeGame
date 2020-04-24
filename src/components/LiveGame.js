@@ -1,8 +1,8 @@
 import React, {useContext, useState} from 'react';
-import './css/LiveGame.css';
-import GameContext from './GameContext';
+import '../css/LiveGame.css';
+import GameContext from '../contextStore/GameContext';
 import SubmissionsDisplay from './SubmissionsDisplay';
-import Announcement from './reusable/Announcement';
+import Announcement from '../reusable/Announcement';
 import Vote from './Vote';
 
 const LiveGame = (props) => {

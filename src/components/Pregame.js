@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import './css/Pregame.css';
-import GameContext from './GameContext';
-import MenuButton from './MenuButton';
+import '../css/Pregame.css';
+import GameContext from '../contextStore/GameContext';
+import MenuButton from '../reusable/MenuButton';
 
 const Pregame = (props) => {
     const { code, players, gameIsFull, liveGameMode } = useContext(GameContext);

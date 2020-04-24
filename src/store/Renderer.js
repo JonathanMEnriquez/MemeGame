@@ -3,7 +3,7 @@ const {
     ADD_IMAGE,
     DELETE_IMAGE,
     UPDATE_IMAGE,
-} = require('./utils/Constants');
+} = require('../utils/Constants');
 const { ipcRenderer } = window.require('electron');
 
 class Renderer {

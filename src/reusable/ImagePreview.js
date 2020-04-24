@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import './css/ImagePreview.css';
-import Delete from './img/trash.png';
+import '../css/ImagePreview.css';
+import Delete from '../img/trash.png';
 
 const ImagePreview = (props) => {
     const { removeImage, isLive, meme, clickHandler } = props;

@@ -1,9 +1,9 @@
 import React, {useContext} from 'react';
-import GameContext from './GameContext';
-import './css/Collection.css';
-import Renderer from './Renderer';
-import ImagePreview from './ImagePreview';
-import Upload from './img/upload-img.png';
+import GameContext from '../contextStore/GameContext';
+import '../css/Collection.css';
+import Renderer from '../store/Renderer';
+import ImagePreview from '../reusable/ImagePreview';
+import Upload from '../img/upload-img.png';
 
 const Collection = (props) => {
     const { uploadMode, showMemeDetail } = props;

@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import Dropzone from './Dropzone';
-import './css/ImageDragAndDrop.css';
+import '../css/ImageDragAndDrop.css';
 import UploadImg from './img/upload-img.png';
-import { generateUniqueImageName } from './utils/Randoms';
-import Meme from './classes/Meme';
-import GameContext from './GameContext';
+import { generateUniqueImageName } from '../utils/Randoms';
+import Meme from '../classes/Meme';
+import GameContext from '../contextStore/GameContext';
 import ImagePreview from './ImagePreview';
-import Renderer from './Renderer';
-import Message from './Message';
+import Renderer from '../store/Renderer';
+import Message from '../reusable/Message';
 
 class ImageDragAndDrop extends Component {
     state = {

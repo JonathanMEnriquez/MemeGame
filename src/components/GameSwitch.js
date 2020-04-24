@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import GameContext from './GameContext';
+import GameContext from '../contextStore/GameContext';
 import TitleScreen from './TitleScreen';
 import Pregame from './Pregame';
 import LiveGame from './LiveGame';
