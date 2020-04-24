@@ -38,9 +38,13 @@ const MemeDiscover = (props) => {
     return (
         <div className="meme-discover">
             <div className="discover-header">
+                <div className="discover-search">
+                    <input placeholder="Search" />
+                </div>
                 {providers && Object.keys(providers).map((prov, key) => {
                     return (
                         <span 
+                            className={provider === providers[prov] ? 'selected' : ''}
                             key={key}
                             onClick={() => switchProvider(providers[prov])} >
                             {providers[prov]}

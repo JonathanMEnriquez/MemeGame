@@ -1,0 +1,24 @@
+.gif-option {
+    width: 21.5vw;
+    height: 21.5vw;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+    background-size: cover;
+    font-size: 1.5vw;
+    cursor: pointer;
+}
+
+.gif-option.selected-gif {
+    box-shadow: inset 0 0 0 4px rgb(74, 216, 93);
+}
+
+.gif-option > span {
+    color: transparent;
+    display: block;
+    text-align: center;
+}
+
+.gif-option:hover > span {
+    color: rgb(204, 204, 204);
+}
