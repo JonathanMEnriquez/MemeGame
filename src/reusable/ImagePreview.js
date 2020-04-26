@@ -4,10 +4,12 @@ import Delete from '../img/trash.png';
 
 const ImagePreview = (props) => {
     const { removeImage, isLive, meme, clickHandler } = props;
-    const { alt, data, id } = meme;
+    const { alt, dataMinified, data, id } = meme;
     const [options, setOptions] = useState(false);
     
-    const deleteImg = () => {
+    const deleteImg = (e) => {
+        // stops propagation to not propagate to handleClick handler
+        e.stopPropagation();
         removeImage(id);
     };
 
@@ -35,7 +37,7 @@ const ImagePreview = (props) => {
     }
 
     return (
-        <div style={{backgroundImage: `url(${data})`}} 
+        <div style={{backgroundImage: `url(${dataMinified || data})`}} 
             className={setClassName()}
             onMouseEnter={showOptions}
             onMouseLeave={hideOptions}

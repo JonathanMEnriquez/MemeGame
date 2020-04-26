@@ -3,14 +3,11 @@ import '../css/SubmissionsDisplay.css';
 
 const SubmissionsDisplay = (props) => {
     const { deck, round, setGameModeToVote, shuffledSubmissions } = props;
-    console.log(shuffledSubmissions, props);
     const [submission, setSubmission] = useState();
     const timePerSubmission = 1000 * 10;
 
     const setSubmissionToDisplay = (idx) => {
-        console.log('set submission called with idx ', idx);
         const card = deck.getCardByMemeId(shuffledSubmissions[idx].card);
-        console.log('to display: ', card);
         setSubmission(card);
         if (idx + 1 < round.submissionsSize()) {
             const nextIdx = idx + 1;

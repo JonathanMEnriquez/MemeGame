@@ -9,14 +9,11 @@ const Vote = (props) => {
 
     const collection = ballotCollection;
 
-    console.log(ballotCollection);
-
     useEffect(() => init(), []);
 
     const init = () => {
         setUpBallots();
         const strippedDownBallots = collection.stripDownBallots();
-        console.log('initing ', strippedDownBallots, collection);
         sendChoicesForSelecting(strippedDownBallots);
     };
 
@@ -33,8 +30,6 @@ const Vote = (props) => {
         return null;
     };
 
-    //TODO: add method callback to gameprovider
-
     return (
         <div className="vote">
             <div className="vote-caption">
@@ -47,7 +42,7 @@ const Vote = (props) => {
                             <div className="card"
                                 style={{backgroundImage: `url(${ballot.card.data})`}}>
                             </div>
-                            <p>Choice: {ballot.number}</p>
+                            <p>{ballot.number}</p>
                         </div>
                     )
                 })}

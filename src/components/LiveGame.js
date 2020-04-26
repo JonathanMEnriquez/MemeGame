@@ -4,6 +4,7 @@ import GameContext from '../contextStore/GameContext';
 import SubmissionsDisplay from './SubmissionsDisplay';
 import Announcement from '../reusable/Announcement';
 import Vote from './Vote';
+import Standings from './Standings';
 
 const LiveGame = (props) => {
     const { players, round, judge, automaticProgressGame, 
@@ -24,10 +25,6 @@ const LiveGame = (props) => {
     const [liveGameMode, setLiveGameMode] = useState(liveGameStates.round);
     const [shuffledSubmissions, setShuffledSubmissions] = useState();
 
-    const switchAfterTwoSeconds = (liveGameState) => {
-        setTimeout(() => setLiveGameMode(liveGameState), 1000 * 2);
-    }
-
     const switchAfterXSeconds = (liveGameState, milliseconds) => {
         setTimeout(() => setLiveGameMode(liveGameState), milliseconds);
     }
@@ -44,7 +41,7 @@ const LiveGame = (props) => {
     const generateContent = () => {
         switch(liveGameMode) {
             case liveGameStates.round:
-                switchAfterTwoSeconds(liveGameStates.caption);
+                switchAfterXSeconds(liveGameStates.caption, 2000);
                 return <Announcement content={announcement} />
             case liveGameStates.caption:
                 return (
@@ -78,7 +75,7 @@ const LiveGame = (props) => {
                         shuffledSubmissions={shuffledSubmissions}
                         setGameModeToVote={prepareToVote} />
             case liveGameStates.announceVote:
-                switchAfterTwoSeconds(liveGameStates.vote);
+                switchAfterXSeconds(liveGameStates.vote, 2000);
                 return <Announcement content={announcement} />
             case liveGameStates.vote:
                 return <Vote submissions={shuffledSubmissions} 
@@ -89,7 +86,9 @@ const LiveGame = (props) => {
                 switchAfterXSeconds(liveGameStates.standings, 5000);
                 return <Announcement content={announcement} />
             case liveGameStates.standings:
-                return <div>STANDINGS TIME</div>
+                return <Standings 
+                        players={players}
+                        round={round} />
             case liveGameStates.winner:
                 return <div>winner</div>
             default:
@@ -141,7 +140,7 @@ const LiveGame = (props) => {
             const newAnnouncement = `Round winner: \n${judgesChoice.name}\n`
                     .concat(
                         playersChoice === undefined ?
-                        `No one earned a majority of the vote of the people` :
+                        `\nNo one earned a majority of the vote of the people` :
                         `Player's choice: \n${playersChoice.name}`
                     )
             setAnnouncement(newAnnouncement);
@@ -156,6 +155,7 @@ const LiveGame = (props) => {
         return ballotCollection.totalVotesCast() === players.length;
     };
 
+    // TODO - REWRITE TO UTILIZE USEEFFECT
     checkIfJudgeIsReady();
     checkIfAllPlayersHaveVoted();
 

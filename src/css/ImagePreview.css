@@ -1,13 +1,13 @@
 .image-preview {
-    width: 16vw;
-    height: 16vw;
-    overflow: hidden;
-    display: inline-block;
-    text-align: center;
-    background-size: contain;
+    width: 21.5vw;
+    height: 21.5vw;
     background-repeat: no-repeat;
     background-position-x: center;
     background-position-y: center;
+    background-size: cover;
+    font-size: 1.5vw;
+    cursor: pointer;
+    overflow: hidden;
 }
 
 .no-actions {
@@ -17,10 +17,6 @@
 
 .clickable {
     cursor: pointer;
-}
-
-.image-preview:not(:first-child) {
-    margin-left: 4%;
 }
 
 .image-preview .image-preview-body {

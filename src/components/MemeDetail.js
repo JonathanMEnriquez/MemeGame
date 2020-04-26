@@ -1,21 +1,21 @@
-import React from 'react';
+import React, {useState, useContext} from 'react';
 import '../css/MemeDetail.css';
 import DynamicInput from '../reusable/DynamicInput';
-import Renderer from '../store/Renderer';
 import Detail from '../reusable/Detail';
+import GameContext from '../contextStore/GameContext';
 
 const MemeDetail = (props) => {
     const { meme, returnToCollectionView } = props;
-    const { alt, data, id, addedOn } = meme;
+    const { alt, data, id, addedOn, dataType, extension, provider, playable } = meme;
+    const { memes } = useContext(GameContext);
     const legibleAddedOn = new Date(addedOn).toLocaleDateString();
-    const [, updateState] = React.useState();
+    const [, updateState] = useState();
     const DETAILFONTSIZE = '2vw';
 
     const updateMemeDetail = (property, newVal) => {
+        console.log(property, newVal);
         if (newVal && newVal.length && meme[property] !== newVal) {
-            const renderer = new Renderer();
-            meme[property] = newVal;
-            renderer.updateImage(meme);
+            memes.updateMeme(meme, property, newVal);
             updateState({});
         }
     }
@@ -43,6 +43,24 @@ const MemeDetail = (props) => {
                             value={legibleAddedOn}
                             fontSize={DETAILFONTSIZE} />
                 </div>
+                <div className="row">
+                    <Detail name="data type"
+                            value={dataType}
+                            fontSize={DETAILFONTSIZE} />
+                    <Detail name="file type"
+                            value={extension}
+                            fontSize={DETAILFONTSIZE} />
+                </div>
+                {provider &&
+                    <div className="row">
+                        <Detail name="provider"
+                                value={provider}
+                                fontSize={DETAILFONTSIZE} />
+                        <Detail name="playable"
+                                value={playable === 1 ? 'Yes' : 'No'}
+                                fontSize={DETAILFONTSIZE} />
+                    </div>
+                }
             </div>
         </div>
     )

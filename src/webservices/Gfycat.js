@@ -1,19 +1,14 @@
-import { serializeToMemeList } from '../serializers/TenorSerializer';
+import { serializeToMemeList } from '../serializers/GfycatSerializer';
 
-class TenorFetch {
-    constructor(key) {
-        // TODO: fetch key from db
-        this.key = key || 'EUE1YTP8M6QW';
-    }
-
+class GfycatFetch {
     getTrendingGifs(serialize) {
         return new Promise((resolve, reject) => {
-            fetch(`https://api.tenor.com/v1/trending?key=${this.key}`)
+            fetch(`https://api.gfycat.com/v1/reactions/populated?tagName=trending`)
                 .then(response => response.json())
                 .then(data => {
                     resolve (
                         serialize ?
-                            serializeToMemeList(data.results) :
+                            serializeToMemeList(data.gfycats) :
                             data
                     );
                 })
@@ -23,12 +18,13 @@ class TenorFetch {
 
     getGifsBySearchTerm(searchTerm, serialize) {
         return new Promise((resolve, reject) => {
-            fetch(`https://api.tenor.com/v1/search?q=${searchTerm}&key=${this.key}`)
+            fetch(`https://api.gfycat.com/v1/gfycats/search?search_text=${searchTerm}`)
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data);
                     resolve (
                         serialize ?
-                            serializeToMemeList(data.results) :
+                            serializeToMemeList(data.gfycats) :
                             data
                     );
                 })
@@ -38,13 +34,12 @@ class TenorFetch {
 
     getGifById(id, serialize) {
         return new Promise((resolve, reject) => {
-            fetch(`https://api.tenor.com/v1/gifs/?ids=${id}&key=${this.key}`)
+            fetch(`https://api.gfycat.com/v1/gfycats/${id}`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data.results);
                     resolve (
                         serialize ?
-                            serializeToMemeList(data.results) :
+                            serializeToMemeList([data.gfyItem]) :
                             data
                     );
                 })
@@ -53,4 +48,4 @@ class TenorFetch {
     }
 }
 
-export default TenorFetch;
+export default GfycatFetch;

@@ -9,6 +9,7 @@ import Deck from '../classes/Deck';
 import Round from '../classes/Round';
 import CaptionsCollection from '../classes/Captions';
 import BallotCollection from '../classes/Ballot';
+import MemeCollection from '../classes/MemeCollection';
 
 class GameProvider extends Component {
     state = {
@@ -22,7 +23,7 @@ class GameProvider extends Component {
         code: '',
         players: [],
         maxPlayers: 6,
-        cardsPerHand: 3,
+        cardsPerHand: 7,
         gameIsFull: false,
         memes: [],
         ioServer: null,
@@ -60,7 +61,7 @@ class GameProvider extends Component {
     retrieveImages() {
         const renderer = new Renderer();
         const memes = renderer.retrieveAllImages();
-        this.setState({memes: memes});
+        this.setState({memes: new MemeCollection(memes)});
     }
 
     processSelection(data) {
@@ -96,7 +97,7 @@ class GameProvider extends Component {
 
     _gameCanGoToPregameMode() {
         // TODO: update this logic to reflect the max players
-        return this.state.memes.length;
+        return this.state.memes.size();
     }
 
     setToPregameMode() {
@@ -117,7 +118,7 @@ class GameProvider extends Component {
 
     initializeDeck() {
         if (!this.state.deck) {
-            this.setState({deck: new Deck(this.state.memes)});
+            this.setState({deck: new Deck(this.state.memes.collection)});
         }
     }
 
@@ -186,16 +187,6 @@ class GameProvider extends Component {
         return { success: true };
     }
 
-    addMeme(meme) {
-        const dupe = [...this.state.memes, meme]
-        this.setState({memes: dupe});
-    }
-
-    removeMeme(memeId) {
-        const memes = this.state.memes.filter(m => m.id !== memeId);
-        this.setState({memes: memes});
-    }
-
     getHand() {
         return this.state.deck.getRandomHand(this.state.cardsPerHand);
     }
@@ -228,7 +219,7 @@ class GameProvider extends Component {
     render() {
         const { gameMode, modes, code, players, memes, judge, round, rounds, 
                 maxTimePerRound, automaticProgressGame, isFinalRound, deck,
-                ballotCollection } = this.state;
+                ballotCollection, goalPoints } = this.state;
 
         return ( 
             <GameContext.Provider
@@ -255,6 +246,7 @@ class GameProvider extends Component {
                     sendChoicesForSelecting: (choices) => this.sendChoicesForSelecting(choices),
                     ballotCollection: ballotCollection,
                     socketSendWinnerInfo: (judgeChoice, playersChoice) => this.socketSendWinnerInfo(judgeChoice, playersChoice),
+                    goalPoints: goalPoints,
                 }}
             >
                 {this.props.children}

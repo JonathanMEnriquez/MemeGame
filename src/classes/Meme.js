@@ -12,6 +12,12 @@ class Meme {
         this.addedOn = new Date().toUTCString();
         this.updatedOn = new Date().toUTCString();
     }
+
+    giveId(id) {
+        if (!this.id && id) {
+            this.id = id;
+        }
+    }
 }
 
 export default Meme;

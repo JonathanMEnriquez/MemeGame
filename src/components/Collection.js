@@ -1,20 +1,17 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import GameContext from '../contextStore/GameContext';
 import '../css/Collection.css';
-import Renderer from '../store/Renderer';
 import ImagePreview from '../reusable/ImagePreview';
 import Upload from '../img/upload-img.png';
 
 const Collection = (props) => {
     const { uploadMode, showMemeDetail } = props;
-    const { memes, syncMemes } = useContext(GameContext);
-    const renderer = new Renderer();
+    const { memes } = useContext(GameContext);
+    const [collection, setCollection] = useState(memes.collection || []);
     
-    const deleteMeme = (memeId) => {
-        if (renderer.deleteImgFromStore(memeId)) {
-            const dupe = memes.filter(m => m.id !== memeId);
-            syncMemes(dupe);
-        }
+    const deleteMeme = async(memeId) => {
+        await memes.deleteMeme(memeId);
+        setCollection(memes.collection);
     }
 
     return (
@@ -24,9 +21,9 @@ const Collection = (props) => {
                     src={Upload}
                     alt="Upload More"
                     onClick={uploadMode} />
+                <span>Game Collection</span>
             </div>
-            <h1>Meme Collection</h1>
-            {memes.map((meme, key) => {
+            {collection.map((meme, key) => {
                 return <ImagePreview 
                     meme={meme} 
                     key={key} 

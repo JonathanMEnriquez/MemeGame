@@ -1,19 +1,19 @@
-import { serializeToMemeList } from '../serializers/TenorSerializer';
+import { serializeToMemeList } from '../serializers/GiphySerializer';
 
-class TenorFetch {
+class GiphyFetch {
     constructor(key) {
         // TODO: fetch key from db
-        this.key = key || 'EUE1YTP8M6QW';
+        this.key = key || 'WYbyQkORdwOuYzvbJDQO4WHRWUa4NxQ6';
     }
 
     getTrendingGifs(serialize) {
         return new Promise((resolve, reject) => {
-            fetch(`https://api.tenor.com/v1/trending?key=${this.key}`)
+            fetch(`https://api.giphy.com/v1/gifs/trending?api_key=${this.key}&limit=24&rating=R`)
                 .then(response => response.json())
                 .then(data => {
                     resolve (
                         serialize ?
-                            serializeToMemeList(data.results) :
+                            serializeToMemeList(data.data) :
                             data
                     );
                 })
@@ -23,12 +23,12 @@ class TenorFetch {
 
     getGifsBySearchTerm(searchTerm, serialize) {
         return new Promise((resolve, reject) => {
-            fetch(`https://api.tenor.com/v1/search?q=${searchTerm}&key=${this.key}`)
+            fetch(`https://api.giphy.com/v1/gifs/search?api_key=${this.key}&q=${searchTerm}&limit=24&offset=0&rating=R&lang=en`)
                 .then(response => response.json())
                 .then(data => {
                     resolve (
                         serialize ?
-                            serializeToMemeList(data.results) :
+                            serializeToMemeList(data.data) :
                             data
                     );
                 })
@@ -38,19 +38,19 @@ class TenorFetch {
 
     getGifById(id, serialize) {
         return new Promise((resolve, reject) => {
-            fetch(`https://api.tenor.com/v1/gifs/?ids=${id}&key=${this.key}`)
+            fetch(`https://api.giphy.com/v1/gifs/${id}?api_key=${this.key}`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data.results);
+                    console.log(data);
                     resolve (
                         serialize ?
-                            serializeToMemeList(data.results) :
+                            serializeToMemeList([data.data]) :
                             data
                     );
                 })
-                .catch(err => resolve([]));
+                .catch (err => resolve([]));
         });
     }
 }
 
-export default TenorFetch;
+export default GiphyFetch;

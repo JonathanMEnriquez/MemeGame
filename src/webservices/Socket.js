@@ -18,7 +18,7 @@ function ioServer(code, callbacks) {
     };
 
     self.sendHand = (playerSocket, cards) => {
-        console.log('called ioserver sendhand');
+        console.log(`Socket about to emit ${Constants.SOCKET_SEND_HAND} with these cards: `, cards);
         return new Promise((resolve, reject) => {
             playerSocket.emit(Constants.SOCKET_SEND_HAND, {hand: cards});
             playerSocket.on(Constants.SOCKET_SEND_HAND_ERROR, (err) => {
