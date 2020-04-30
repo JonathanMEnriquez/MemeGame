@@ -17,7 +17,7 @@ class MemeStore extends Store {
 
     getMemes() {
         console.info('Memestore will get all memes from storage.');
-        console.log(this.memes.map(m => m.id));
+        console.info(this.memes.map(m => m.id));
         return this.memes;
     }
 

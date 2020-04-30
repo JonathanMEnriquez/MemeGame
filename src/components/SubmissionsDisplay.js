@@ -18,7 +18,6 @@ const SubmissionsDisplay = (props) => {
     }
 
     const getIndexForSubmission = () => {
-        console.log(shuffledSubmissions);
         const idx = shuffledSubmissions.findIndex(sub => sub.card === submission.id);
         return idx + 1;
     }

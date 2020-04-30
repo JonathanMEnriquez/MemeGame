@@ -9,6 +9,7 @@ function ioServer(code, callbacks) {
 
     self.startRound = (judge, players, round) => {
         console.info('Socket emitting signals to begin round: ' + round);
+        console.debug(judge, players, round);
 
         judge.socket.emit(Constants.SOCKET_START_ROUND_AS_JUDGE, { round: round });
 
@@ -39,13 +40,26 @@ function ioServer(code, callbacks) {
     }
 
     self.getReadyResponseFromJudge = (judge) => {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             console.debug(`Socket about to emit \'${Constants.SOCKET_SEND_JUDGE_CAN_CONTINUE}\' signal.`);
             judge.socket.emit(Constants.SOCKET_SEND_JUDGE_CAN_CONTINUE);
             judge.socket.on(Constants.SOCKET_RECEIVE_JUDGE_PERMISSION_TO_CONTINUE, (data) => {
                 console.debug(`Socket received a ${Constants.SOCKET_RECEIVE_JUDGE_PERMISSION_TO_CONTINUE} signal with data: `, data);
                 if (data && data.name === judge.name) {
                     // judge.socket.off(Constants.SOCKET_RECEIVE_JUDGE_PERMISSION_TO_CONTINUE);
+                    resolve(1);
+                }
+            });
+        });
+    }
+
+    self.getStartRoundResponseFromJudge = (nextRoundJudge) => {
+        return new Promise(resolve => {
+            console.debug(`Socket about to emit ${Constants.SOCKET_SEND_START_ROUND_OPTION} signal to ${nextRoundJudge.name}`);
+            nextRoundJudge.socket.emit(Constants.SOCKET_SEND_START_ROUND_OPTION);
+            nextRoundJudge.socket.on(Constants.SOCKET_RECEIVED_JUDGE_NEW_ROUND_START, data => {
+                console.debug(`Socket receievd a ${Constants.SOCKET_RECEIVED_JUDGE_NEW_ROUND_START} signal from ${data.judge}`);
+                if (data && data.name === nextRoundJudge.name) {
                     resolve(1);
                 }
             });

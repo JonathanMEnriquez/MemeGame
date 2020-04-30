@@ -22,11 +22,8 @@ class Ballot {
     }
 
     addVote(voterName) {
-        console.log('in add vote on ballot ');
         if (!this._voterAlreadyVotedForThis(voterName)) {
-            console.log('voter has not voted');
             this.votes.push(new Vote(voterName));
-            console.log(this.votes);
         }
     }
 

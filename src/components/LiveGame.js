@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import '../css/LiveGame.css';
 import GameContext from '../contextStore/GameContext';
 import SubmissionsDisplay from './SubmissionsDisplay';
@@ -10,7 +10,8 @@ const LiveGame = (props) => {
     const { players, round, judge, automaticProgressGame, 
             deck, maxTimePerRound, startNewRound,
             getJudgesContinueAction, ballotCollection,
-            socketSendWinnerInfo } = useContext(GameContext);
+            socketSendWinnerInfo, getStartRoundResponseFromJudge
+            } = useContext(GameContext);
     const liveGameStates = {
         round: 'ro',
         caption: 'ca',
@@ -88,7 +89,10 @@ const LiveGame = (props) => {
             case liveGameStates.standings:
                 return <Standings 
                         players={players}
-                        round={round} />
+                        round={round}
+                        switchToNewRoundView={() => setLiveGameMode(liveGameStates.round)}
+                        getStartRoundResponseFromJudge={getStartRoundResponseFromJudge}
+                        startNewRound={startNewRound} />
             case liveGameStates.winner:
                 return <div>winner</div>
             default:
@@ -146,14 +150,14 @@ const LiveGame = (props) => {
             setAnnouncement(newAnnouncement);
             socketSendWinnerInfo(judgesChoice.name, playersChoice && playersChoice.name);
             setLiveGameMode(liveGameStates.announceRoundWinner);
-
-            // give new judge ability to start round
         }
     }
 
     const allVotesAreIn = () => {
         return ballotCollection.totalVotesCast() === players.length;
     };
+
+    useEffect(() => setShuffledSubmissions([]), [round]);
 
     // TODO - REWRITE TO UTILIZE USEEFFECT
     checkIfJudgeIsReady();

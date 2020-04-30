@@ -40,14 +40,15 @@
     width: 96%;
     padding: 0 2%;
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 .standings .player-standings .player-container .player-info {
     width: 15%;
     min-height: 100%;
-    padding-top: 1.5vh;
+    padding-top: 2vh;
     font-size: 1.75vw;
     overflow: hidden;
 }

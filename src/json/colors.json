@@ -90,21 +90,6 @@
         "name": "Yellow"
     },
     {
-        "colorId": 12,
-        "hexString": "#0000ff",
-        "rgb": {
-            "r": 0,
-            "g": 0,
-            "b": 255
-        },
-        "hsl": {
-            "h": 240,
-            "s": 100,
-            "l": 50
-        },
-        "name": "Blue"
-    },
-    {
         "colorId": 13,
         "hexString": "#ff00ff",
         "rgb": {

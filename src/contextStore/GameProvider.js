@@ -166,7 +166,8 @@ class GameProvider extends Component {
 
         this.setState({ judge: judge + 1, 
             roundNumber: roundNumber + 1, 
-            round: newRound, isFinalRound: !enoughCardsForAnotherRound,
+            round: newRound, 
+            isFinalRound: !enoughCardsForAnotherRound,
             ballotCollection: new BallotCollection() });
     }
 
@@ -205,6 +206,21 @@ class GameProvider extends Component {
         const { judge } = this.state.round;
         const res = await this.state.ioServer.getReadyResponseFromJudge(judge);
         return res;
+    }
+
+    async getStartRoundResponseFromJudge() {
+        const { ioServer } = this.state;
+        const newJudge = this.getNextRoundsJudge();
+        const res = await ioServer.getStartRoundResponseFromJudge(newJudge);
+        return res;
+    }
+
+    getNextRoundsJudge() {
+        const { roundNumber, players } = this.state;
+        console.log('roundnumber ', roundNumber);
+        const newJudgeIdx = (roundNumber - 1) % players.length;
+
+        return players[newJudgeIdx];
     }
 
     sendChoicesForSelecting(choices) {
@@ -247,6 +263,7 @@ class GameProvider extends Component {
                     ballotCollection: ballotCollection,
                     socketSendWinnerInfo: (judgeChoice, playersChoice) => this.socketSendWinnerInfo(judgeChoice, playersChoice),
                     goalPoints: goalPoints,
+                    getStartRoundResponseFromJudge: this.getStartRoundResponseFromJudge.bind(this),
                 }}
             >
                 {this.props.children}

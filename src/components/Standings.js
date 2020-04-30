@@ -1,9 +1,10 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import '../css/Standings.css';
 import GameContext from '../contextStore/GameContext';
 
 const Standings = (props) => {
-    const { players, round } = props;
+    const { players, round, switchToNewRoundView,
+        getStartRoundResponseFromJudge, startNewRound } = props;
     const { goalPoints } = useContext(GameContext);
     const playersInOrderOfPoints = [...players].sort((a, b) => a.points > b.points);
 
@@ -14,6 +15,17 @@ const Standings = (props) => {
     const heightBasedOnTotalPlayers = () => {
         return `${Math.floor(100 / players.length - 2)}%`
     };
+
+    useEffect(() => {
+        async function getStartRoundOkFromJudge() {
+            if (await getStartRoundResponseFromJudge()) {
+                startNewRound();
+                setTimeout(() => switchToNewRoundView(), 1000);
+            }
+        }
+
+        getStartRoundOkFromJudge();
+    }, []);
 
     return (
         <div className="standings">
