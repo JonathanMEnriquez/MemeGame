@@ -52,7 +52,6 @@ class BallotCollection {
 
     addVote(playerName, number) {
         const ballot = this._findBallotByNumberOrReturnUndefined(number);
-        console.log('found ballot ', ballot);
         if (ballot) {
             ballot.addVote(playerName);
         }

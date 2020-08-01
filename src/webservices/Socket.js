@@ -19,15 +19,14 @@ function ioServer(code, callbacks) {
     };
 
     self.sendHand = (playerSocket, cards) => {
-        console.log(`Socket about to emit ${Constants.SOCKET_SEND_HAND} with these cards: `, cards);
         return new Promise((resolve, reject) => {
             playerSocket.emit(Constants.SOCKET_SEND_HAND, {hand: cards});
             playerSocket.on(Constants.SOCKET_SEND_HAND_ERROR, (err) => {
-                console.error('failed sending full hand.');
+                console.error('Failed sending full hand');
                 reject(err);
             });
             playerSocket.on(Constants.SOCKET_SEND_HAND_CONFIRM, () => {
-                console.log('player got hand!');
+                console.info('Player received hand');
                 resolve('Success');
             });
         });
@@ -36,7 +35,7 @@ function ioServer(code, callbacks) {
     self.sendCard = (playerSocket, card) => {
         console.debug('Socket about to emit sendCard signal. ', card.id);
         playerSocket.emit(Constants.SOCKET_SEND_CARD, {card: card});
-        playerSocket.on(Constants.SOCKET_SEND_CARD_CONFIRM, () => console.log('confirmed receipt of card!'));
+        playerSocket.on(Constants.SOCKET_SEND_CARD_CONFIRM, () => console.debug(`Socket received a ${Constants.SOCKET_SEND_CARD_CONFIRM} signal for ${card}`));
     }
 
     self.getReadyResponseFromJudge = (judge) => {
@@ -46,7 +45,6 @@ function ioServer(code, callbacks) {
             judge.socket.on(Constants.SOCKET_RECEIVE_JUDGE_PERMISSION_TO_CONTINUE, (data) => {
                 console.debug(`Socket received a ${Constants.SOCKET_RECEIVE_JUDGE_PERMISSION_TO_CONTINUE} signal with data: `, data);
                 if (data && data.name === judge.name) {
-                    // judge.socket.off(Constants.SOCKET_RECEIVE_JUDGE_PERMISSION_TO_CONTINUE);
                     resolve(1);
                 }
             });
@@ -58,7 +56,7 @@ function ioServer(code, callbacks) {
             console.debug(`Socket about to emit ${Constants.SOCKET_SEND_START_ROUND_OPTION} signal to ${nextRoundJudge.name}`);
             nextRoundJudge.socket.emit(Constants.SOCKET_SEND_START_ROUND_OPTION);
             nextRoundJudge.socket.on(Constants.SOCKET_RECEIVED_JUDGE_NEW_ROUND_START, data => {
-                console.debug(`Socket receievd a ${Constants.SOCKET_RECEIVED_JUDGE_NEW_ROUND_START} signal from ${data.judge}`);
+                console.debug(`Socket receieved a ${Constants.SOCKET_RECEIVED_JUDGE_NEW_ROUND_START} signal from ${data.judge}`);
                 if (data && data.name === nextRoundJudge.name) {
                     resolve(1);
                 }

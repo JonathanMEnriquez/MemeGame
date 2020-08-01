@@ -41,7 +41,6 @@ class GiphyFetch {
             fetch(`https://api.giphy.com/v1/gifs/${id}?api_key=${this.key}`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     resolve (
                         serialize ?
                             serializeToMemeList([data.data]) :

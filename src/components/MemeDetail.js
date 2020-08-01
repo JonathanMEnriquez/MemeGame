@@ -13,7 +13,6 @@ const MemeDetail = (props) => {
     const DETAILFONTSIZE = '2vw';
 
     const updateMemeDetail = (property, newVal) => {
-        console.log(property, newVal);
         if (newVal && newVal.length && meme[property] !== newVal) {
             memes.updateMeme(meme, property, newVal);
             updateState({});

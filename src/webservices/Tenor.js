@@ -41,7 +41,6 @@ class TenorFetch {
             fetch(`https://api.tenor.com/v1/gifs/?ids=${id}&key=${this.key}`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data.results);
                     resolve (
                         serialize ?
                             serializeToMemeList(data.results) :

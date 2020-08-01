@@ -8,7 +8,6 @@ const Pregame = (props) => {
 
     const startGameClickHandler = () => {
         if (players.length > 1) {
-            console.log('let us do this!');
             liveGameMode();
         }
     }

@@ -48,7 +48,6 @@ class Round {
     }
 
     addSubmission(playerName, cardId) {
-        console.log('about to add a card to the round submissions. ', playerName, cardId);
         if (playerName && cardId) {
             if (!this._playerHasAlreadySubmitted()) {
                 this.submissions.push(new Submission(playerName, cardId));

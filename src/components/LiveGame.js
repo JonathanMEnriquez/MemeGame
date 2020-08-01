@@ -107,7 +107,6 @@ const LiveGame = (props) => {
     const shuffleSubmissions = () => {
         if (!shuffledSubmissions) {
             const rand = round.shuffleAndReturnSubmissions();
-            console.log(rand);
             setShuffledSubmissions(rand);
         }
     };
@@ -132,8 +131,6 @@ const LiveGame = (props) => {
             round.setWinner(judgesChoice.name, 'judge');
             round.setWinner(playersChoice && playersChoice.name, 'players');
             round.setAsComplete();
-            
-            console.log(judgesChoice, playersChoice);
 
             const judgeChoicePlayer = players.find(player => player.name === judgesChoice.name);
             const playersChoicePlayer = players.find(player => playersChoice && player.name === playersChoice.name);
@@ -157,7 +154,7 @@ const LiveGame = (props) => {
         return ballotCollection.totalVotesCast() === players.length;
     };
 
-    useEffect(() => setShuffledSubmissions([]), [round]);
+    useEffect(() => setShuffledSubmissions(), [round]);
 
     // TODO - REWRITE TO UTILIZE USEEFFECT
     checkIfJudgeIsReady();

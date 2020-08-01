@@ -21,7 +21,6 @@ class GfycatFetch {
             fetch(`https://api.gfycat.com/v1/gfycats/search?search_text=${searchTerm}`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     resolve (
                         serialize ?
                             serializeToMemeList(data.gfycats) :

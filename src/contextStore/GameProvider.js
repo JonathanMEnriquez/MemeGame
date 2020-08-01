@@ -66,7 +66,7 @@ class GameProvider extends Component {
 
     processSelection(data) {
         if (!data || data.name === undefined || data.choice === undefined || data.round === undefined) {
-            console.debug('ProcessSelection method did not receive all required values');
+            console.debug('ProcessSelection method did not receive all required values: ', data);
             return
         }
 
@@ -123,14 +123,11 @@ class GameProvider extends Component {
     }
 
     addSubmissionToRound(name, cardId, round) {
-        console.log('adding submission ', name, cardId, round);
         if (round === this.state.round.number) {
             if (this.state.round.addSubmission(name, cardId)) {
                 const player = this.state.players.find(pl => pl.name === name);
                 const card = this.state.deck.getRandomCard();
-                console.log('about to send card ', card, player);
                 if (player && card) {
-                    console.log('sending card to ' + player.name);
                     this.state.ioServer.sendCard(player.socket, card);
                     this.forceUpdate();
                 }
@@ -217,7 +214,6 @@ class GameProvider extends Component {
 
     getNextRoundsJudge() {
         const { roundNumber, players } = this.state;
-        console.log('roundnumber ', roundNumber);
         const newJudgeIdx = (roundNumber - 1) % players.length;
 
         return players[newJudgeIdx];
