@@ -1,0 +1,43 @@
+.gif-option {
+    width: 21.5vw;
+    height: 21.5vw;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+    background-size: cover;
+    font-size: 1.5vw;
+    cursor: pointer;
+}
+
+.gif-option.selected-gif {
+    box-shadow: inset 0 0 0 4px #66c5cd;
+}
+
+.gif-option.in-collection {
+    opacity: 0.3;
+}
+
+.gif-option > span {
+    color: transparent;
+    display: block;
+    text-align: center;
+    padding-top: 2vh;
+}
+
+.gif-option:hover > span {
+    color: rgb(204, 204, 204);
+}
+
+.gif-option > p.warning {
+    color: transparent;
+    text-align: center;
+    font-size: 2vw;
+    padding-top: 5vh;
+    text-transform: uppercase;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.gif-option:hover > p.warning {
+    color: rgb(255, 7, 7);
+}

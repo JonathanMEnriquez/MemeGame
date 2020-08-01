@@ -1,5 +1,5 @@
 import React from 'react';
-import './css/MenuButton.css';
+import '../css/MenuButton.css';
 
 const MenuButton = (props) => {
     const { text, clickHandler } = props;
@@ -9,7 +9,10 @@ const MenuButton = (props) => {
     };
 
     return (
-        <div className="menu-button" onClick={clickHandler}>{allCaps(text)}</div>
+        <div className="menu-button"
+            onClick={clickHandler} >
+                {allCaps(text)}
+        </div>
     )
 };
 

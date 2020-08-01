@@ -1,0 +1,71 @@
+.standings {
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+}
+
+.standings .standings-header {
+    height: 15%;
+}
+
+.standings .standings-header > h4 {
+    font-size: 2.5vw;
+    padding: 1vh 0 0;
+    text-align: center;
+}
+
+.standings .standings-header > span {
+    display: inline-block;
+    margin-left: 55%;
+    font-style: italic;
+    font-size: 1.5vw;
+    vertical-align: top;
+    color: rgb(240, 240, 240);
+}
+
+.standings .standings-header > p {
+    font-size: 1.5vw;
+    padding: 0 2vw;
+    text-align: right;
+}
+
+.standings .player-standings {
+    width: 100%;
+    height: 85%;
+    padding: 0;
+    overflow: hidden;
+}
+
+.standings .player-standings .player-container {
+    width: 96%;
+    padding: 0 2%;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.standings .player-standings .player-container .player-info {
+    width: 15%;
+    min-height: 100%;
+    padding-top: 2vh;
+    font-size: 1.75vw;
+    overflow: hidden;
+}
+
+.standings .player-standings .player-container .point-percentage {
+    min-width: 85%;
+    background-color: rgba(255, 255, 255, 0.424);
+    margin-top: 1%;
+}
+
+.standings .player-standings .player-container .point-percentage > div {
+    padding: 2px 0;
+}
+
+.standings .player-standings .player-container .point-percentage > div > span {
+    display: inline-block;
+    padding: 1vh 0.5vw;
+    margin-left: 8px;
+    border-radius: 100%;
+}

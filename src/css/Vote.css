@@ -1,0 +1,60 @@
+.vote {
+    width: 100vw;
+    height: 100vh;
+}
+
+.vote .vote-caption {
+    font-size: 1.5vw;
+    height: 5%;
+    width: 100%;
+    padding: 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+}
+
+.vote .ballot-cards {
+    height: 85%;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+}
+
+.vote .ballot-cards .ballot {
+    width: 32%;
+    height: 90%;
+}
+
+.vote .ballot-cards .ballot .card {
+    width: 100%;
+    height: 90%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+}
+
+.vote .ballot-cards .ballot > p {
+    padding-top: 2vh;
+    text-align: center;
+    font-size: 3vw;
+}
+
+.vote .rules {
+    width: 90%;
+    margin: auto;
+    text-align: center;
+    font-size: 1.5vw;
+    color: rgb(226, 226, 226);
+}
+
+.vote .rules strong {
+    display: block;
+    font-size: 2vw;
+}
